@@ -19,15 +19,15 @@ class health_parameter_vaccination(models.Model):
     gip = models.ForeignKey(general_identification_and_parentage, on_delete=models.CASCADE)
     disease=models.CharField(max_length=50, blank=True)
     make=models.CharField(max_length=20, blank=True)
-    first_dose=models.DateField(blank=True)
-    booster_does=models.DateField(blank=True)
-    repeat=models.DateField(blank=True)
+    first_dose=models.DateField(blank=True,null=True)
+    booster_does=models.DateField(blank=True,null=True)
+    repeat=models.DateField(blank=True,null=True)
     
 
 class health_parameter_vetexam(models.Model):
     gip = models.ForeignKey(general_identification_and_parentage, on_delete=models.CASCADE)
     reason=models.TextField(blank=True)
-    date_of_treatment=models.DateField(blank=True)
+    date_of_treatment=models.DateField(blank=True,null=True)
     medication=models.TextField(blank=True)
     remarks=models.TextField(blank=True)
     postmortem=models.TextField(blank=True)
@@ -36,17 +36,17 @@ class health_parameter_vetexam(models.Model):
 class disposal_culling(models.Model):
     gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
     reason=models.TextField(blank=True)
-    sale_date=models.DateField(blank=True)
+    sale_date=models.DateField(blank=True,null=True)
     weight_sale=models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     cause_death=models.TextField(blank=True)
-    date_death=models.DateField(blank=True)
+    date_death=models.DateField(blank=True,null=True)
     
 
 class nutrition_and_feeding(models.Model):
     gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
     treatment=models.TextField(blank=True)
-    start_date=models.DateField(blank=True)
-    end_date=models.DateField(blank=True)
+    start_date=models.DateField(blank=True,null=True)
+    end_date=models.DateField(blank=True,null=True)
     remarks=models.TextField(blank=True)
     
 
@@ -58,13 +58,13 @@ class economics(models.Model):
 
 class efficiency_parameter(models.Model):
     gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
-    dow=models.DateField(blank=True)
+    dow=models.DateField(blank=True,null=True)
     weaning_age=models.IntegerField(blank=True, null=True)
-    weaning_weight=models.DecimalField(max_digits=3, decimal_places=2)
-    dos=models.DateField(blank=True)
-    doc=models.DateField(blank=True)
-    dosm=models.DateField(blank=True)
-    sexual_maturity_weight=models.DecimalField(max_digits=3, decimal_places=2)
+    weaning_weight=models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    dos=models.DateField(blank=True,null=True)
+    doc=models.DateField(blank=True,null=True)
+    dosm=models.DateField(blank=True,null=True)
+    sexual_maturity_weight=models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
     weight_six=models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
     weaning_eight=models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
     conform_at_eight=models.TextField(blank=True)
@@ -73,7 +73,7 @@ class efficiency_parameter(models.Model):
 class qualification_boar(models.Model):
     gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
     physical_fitness=models.CharField(max_length=10,choices=(('Poor','Poor'),('Good','Good'),('Very Good','Very Good'),('Excellent','Excellent')), default='Good')
-    date_of_training=models.DateField(blank=True)
+    date_of_training=models.DateField(blank=True,null=True)
     period_of_training=models.IntegerField(blank=True, null=True)
     training_score=models.CharField(max_length=10,choices=(('Poor','Poor'),('Good','Good'),('Very Good','Very Good'), ('Excellent','Excellent')), default='Good')
     seminal_characteristics=models.CharField(max_length=10,choices=(('Poor','Poor'),('Good','Good'),('Very Good','Very Good'),('Excellent','Excellent')), default='Good')
@@ -83,8 +83,8 @@ class qualification_boar(models.Model):
 class service_record(models.Model):
     gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
     sow_no=models.CharField(max_length=20, blank=True)
-    dos=models.DateField(blank=True)
-    dof=models.DateField(blank=True)
+    dos=models.DateField(blank=True,null=True)
+    dof=models.DateField(blank=True,null=True)
     parity=models.IntegerField(blank=True, null=True)
     born_male=models.IntegerField(blank=True, null=True)
     born_female=models.IntegerField(blank=True, null=True)
