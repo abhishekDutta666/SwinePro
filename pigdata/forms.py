@@ -6,7 +6,8 @@ class general_form(forms.ModelForm):
         model=general_identification_and_parentage
         fields='__all__'
         labels = {
-            'breed':'Identification Number',
+            'animal_id':'Identification Number',
+            'breed':'Breed',
             'dam_no': 'DAM Number',
             'sire_no': 'SIRE Number',
             'grand_dam': 'Great DAM',
