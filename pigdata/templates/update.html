@@ -1,0 +1,140 @@
+{% extends 'card.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block cardcontent %}
+
+<input type="text" name="animal_id" id="animal_id">
+
+<form id="gipform">
+<div class="row justify-content-center py-2">
+        <button class="btn btn-success btn-lg" type="button" formaction="" id="gip">General Identification And Parentage</button>
+</div>
+</form>
+<form id="epform">
+<div class="row justify-content-center py-2">
+        <button class="btn btn-success btn-lg" type="button" id="ep">Efficiency Parameter</button>
+</div>
+</form>
+<form id="qbbform">
+<div class="row justify-content-center py-2">
+        <button class="btn btn-success btn-lg" type="button" id="qbb">Qualification as a Breeding Boar</button>
+</div>
+</form>
+<form id="srlcform">
+<div class="row justify-content-center py-2">
+        <button class="btn btn-success btn-lg" type="button" id="srlc">Service Record And Litter Character</button>
+</div>
+</form>
+<form id="nfform">
+<div class="row justify-content-center py-2">
+        <button class="btn btn-success btn-lg" type="button" id="nf">Nutrition And Feeding</button>
+</div>
+</form>
+<form id="dcform">
+<div class="row justify-content-center py-2">
+        <button class="btn btn-success btn-lg" type="button" id="dc">Disposal/Culling</button>
+</div>
+</form>
+<form id="ecoform">
+<div class="row justify-content-center py-2">
+        <button class="btn btn-success btn-lg" type="button" id="eco">Economics</button>
+</div>
+</form>
+
+<script>
+    var gip=document.getElementById("gip");
+    gip.addEventListener("click", gipfunc);
+
+    function gipfunc(){
+        console.log("click");
+        var gipform=document.getElementById("gipform");
+        var s1='general/';
+        var s=document.getElementById("animal_id").value;
+        var x=s1.concat(s);
+        gipform.action=x;
+        gipform.submit();
+    }
+
+    var ep=document.getElementById("ep");
+    ep.addEventListener("click", epfunc);
+
+    function epfunc(){
+        console.log("click");
+        var epform=document.getElementById("epform");
+        var s1='efficiency/';
+        var s=document.getElementById("animal_id").value;
+        var x=s1.concat(s);
+        epform.action=x;
+        epform.submit();
+    }
+
+    var qbb=document.getElementById("qbb");
+    qbb.addEventListener("click", qbbfunc);
+
+    function qbbfunc(){
+        console.log("click");
+        var qbbform=document.getElementById("qbbform");
+        var s1='qualification/';
+        var s=document.getElementById("animal_id").value;
+        var x=s1.concat(s);
+        qbbform.action=x;
+        qbbform.submit();
+    }
+
+    var srlc=document.getElementById("srlc");
+    srlc.addEventListener("click", srlcfunc);
+
+    function srlcfunc(){
+        console.log("click");
+        var srlcform=document.getElementById("srlcform");
+        var s1='service/';
+        var s=document.getElementById("animal_id").value;
+        var x=s1.concat(s);
+        srlcform.action=x;
+        srlcform.submit();
+    }
+
+    var nf=document.getElementById("nf");
+    nf.addEventListener("click", nffunc);
+
+    function nffunc(){
+        console.log("click");
+        var nfform=document.getElementById("nfform");
+        var s1='nutrition/';
+        var s=document.getElementById("animal_id").value;
+        var x=s1.concat(s);
+        nfform.action=x;
+        nfform.submit();
+    }
+
+    var dc=document.getElementById("dc");
+    dc.addEventListener("click", dcfunc);
+
+    function dcfunc(){
+        console.log("click");
+        var dcform=document.getElementById("dcform");
+        var s1='disposal/';
+        var s=document.getElementById("animal_id").value;
+        var x=s1.concat(s);
+        dcform.action=x;
+        dcform.submit();
+    }
+
+    var eco=document.getElementById("eco");
+    eco.addEventListener("click", ecofunc);
+
+    function ecofunc(){
+        console.log("click");
+        var ecoform=document.getElementById("ecoform");
+        var s1='economics/';
+        var s=document.getElementById("animal_id").value;
+        var x=s1.concat(s);
+        ecoform.action=x;
+        ecoform.submit();
+    }
+
+    
+    
+</script>
+
+{% endblock cardcontent %}

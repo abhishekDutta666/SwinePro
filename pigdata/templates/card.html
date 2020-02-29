@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block basecontent %}
+
+<div class="container py-3">
+    <div class="row">
+      <div class="col-md-12"> 
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card card-outline-secondary">
+              <div class="card-header">
+                <h3 class="mb-0">{{tablename}}</h3>
+            </div>
+                    <div class="card-body">
+
+                        {% block cardcontent %}
+                        {% endblock cardcontent %}
+                        
+                    </div><!--/card-block-->
+                </div><!-- /form card login -->
+          </div>
+        </div>
+      </div><!--/col-->
+    </div><!--/row-->
+  </div><!--/container-->
+
+  {% endblock basecontent %}

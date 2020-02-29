@@ -2,44 +2,97 @@ from django.db import models
 
 class general_identification_and_parentage(models.Model):
     animal_id=models.CharField(max_length=20)
-    breed=models.CharField(max_length=20)
-    dam_no=models.CharField(max_length=20)
+    #gender=models.charField(max_length=8, choices=(('Male','Male'),('Female','Female')), default='Male')
+    breed=models.CharField(max_length=20, blank=True)
+    dam_no=models.CharField(max_length=20, blank=True)
+    sire_no=models.CharField(max_length=20, blank=True)
+    grand_dam=models.CharField(max_length=20, blank=True)
+    grand_sire=models.CharField(max_length=20, blank=True)
+    colitter_size_of_birth=models.IntegerField(null=True, blank=True)
+    color_and_marking=models.TextField(blank=True)
+    abnormalities=models.CharField(max_length=3, choices=(('yes','yes'),('no','no')), default='no')
+    def __str__(self):
+        return self.animal_id
+
 
 class health_parameter_vaccination(models.Model):
-    disease=models.CharField(max_length=50)
-    first_dose=models.DateField()
-
+    gip = models.ForeignKey(general_identification_and_parentage, on_delete=models.CASCADE)
+    disease=models.CharField(max_length=50, blank=True)
+    make=models.CharField(max_length=20, blank=True)
+    first_dose=models.DateField(blank=True)
+    booster_does=models.DateField(blank=True)
+    repeat=models.DateField(blank=True)
+    
 
 class health_parameter_vetexam(models.Model):
-    reason=models.TextField()
-    date_of_treatment=models.DateField()
+    gip = models.ForeignKey(general_identification_and_parentage, on_delete=models.CASCADE)
+    reason=models.TextField(blank=True)
+    date_of_treatment=models.DateField(blank=True)
+    medication=models.TextField(blank=True)
+    remarks=models.TextField(blank=True)
+    postmortem=models.TextField(blank=True)
+    
 
 class disposal_culling(models.Model):
-    reason=models.TextField()
-    sale_date=models.DateField()
     gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    reason=models.TextField(blank=True)
+    sale_date=models.DateField(blank=True)
+    weight_sale=models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    cause_death=models.TextField(blank=True)
+    date_death=models.DateField(blank=True)
+    
 
 class nutrition_and_feeding(models.Model):
-    treatment=models.TextField()
-    start_date=models.DateField()
-    #gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    treatment=models.TextField(blank=True)
+    start_date=models.DateField(blank=True)
+    end_date=models.DateField(blank=True)
+    remarks=models.TextField(blank=True)
+    
 
 class economics(models.Model):
-    book_value=models.IntegerField()
-    amount_realized =models.IntegerField()
-    #gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    book_value=models.DecimalField(max_digits=10, decimal_places=6, blank=True, null=True)
+    amount_realized =models.IntegerField(blank=True, null=True)
+    
 
 class efficiency_parameter(models.Model):
-    dow=models.DateField()
-    weaning_age=models.IntegerField()
-    #gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    dow=models.DateField(blank=True)
+    weaning_age=models.IntegerField(blank=True, null=True)
+    weaning_weight=models.DecimalField(max_digits=3, decimal_places=2)
+    dos=models.DateField(blank=True)
+    doc=models.DateField(blank=True)
+    dosm=models.DateField(blank=True)
+    sexual_maturity_weight=models.DecimalField(max_digits=3, decimal_places=2)
+    weight_six=models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
+    weaning_eight=models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
+    conform_at_eight=models.TextField(blank=True)
+    
 
 class qualification_boar(models.Model):
-    physical_fitness=models.TextField()
-    date_of_training=models.DateField()
-    #gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    physical_fitness=models.CharField(max_length=10,choices=(('Poor','Poor'),('Good','Good'),('Very Good','Very Good'),('Excellent','Excellent')), default='Good')
+    date_of_training=models.DateField(blank=True)
+    period_of_training=models.IntegerField(blank=True, null=True)
+    training_score=models.CharField(max_length=10,choices=(('Poor','Poor'),('Good','Good'),('Very Good','Very Good'), ('Excellent','Excellent')), default='Good')
+    seminal_characteristics=models.CharField(max_length=10,choices=(('Poor','Poor'),('Good','Good'),('Very Good','Very Good'),('Excellent','Excellent')), default='Good')
+    suitability=models.CharField(max_length=10,choices=(('yes','yes'), ('no','no')), default='no')
+    
 
 class service_record(models.Model):
-    sow_no=models.CharField(max_length=20)
-    dof=models.DateField()
-    #gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    sow_no=models.CharField(max_length=20, blank=True)
+    dos=models.DateField(blank=True)
+    dof=models.DateField(blank=True)
+    parity=models.IntegerField(blank=True, null=True)
+    born_male=models.IntegerField(blank=True, null=True)
+    born_female=models.IntegerField(blank=True, null=True)
+    born_total=models.IntegerField(blank=True, null=True)
+    liiter_weight_birth=models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
+    weaned_male=models.IntegerField(blank=True, null=True)
+    weaned_female=models.IntegerField(blank=True, null=True)
+    total_weaned=models.IntegerField(blank=True, null=True)
+    weaning_weight=models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    still_birth_abnormality=models.IntegerField(blank=True, null=True)
+    
