@@ -37,7 +37,7 @@ class disposal_culling(models.Model):
     gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
     reason=models.TextField(blank=True)
     sale_date=models.DateField(blank=True,null=True)
-    weight_sale=models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    weight_sale=models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     cause_death=models.TextField(blank=True)
     date_death=models.DateField(blank=True,null=True)
     
@@ -60,13 +60,13 @@ class efficiency_parameter(models.Model):
     gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
     dow=models.DateField(blank=True,null=True)
     weaning_age=models.IntegerField(blank=True, null=True)
-    weaning_weight=models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    weaning_weight=models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     dos=models.DateField(blank=True,null=True)
     doc=models.DateField(blank=True,null=True)
     dosm=models.DateField(blank=True,null=True)
-    sexual_maturity_weight=models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
-    weight_six=models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
-    weaning_eight=models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
+    sexual_maturity_weight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
+    weight_six=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
+    weaning_eight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
     conform_at_eight=models.TextField(blank=True)
     
 
@@ -93,6 +93,6 @@ class service_record(models.Model):
     weaned_male=models.IntegerField(blank=True, null=True)
     weaned_female=models.IntegerField(blank=True, null=True)
     total_weaned=models.IntegerField(blank=True, null=True)
-    weaning_weight=models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    weaning_weight=models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     still_birth_abnormality=models.IntegerField(blank=True, null=True)
     
