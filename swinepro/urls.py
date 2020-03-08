@@ -20,4 +20,5 @@ urlpatterns = [
     path('', include('pigdata.urls')),
     path('admin/', admin.site.urls),
     
+    
 ]

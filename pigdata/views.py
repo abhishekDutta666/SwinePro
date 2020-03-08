@@ -5,6 +5,7 @@ from .models import *
 
 # Create your views here.
 
+
 def successupdate(request):
     return render(request,"successupdate.html", context={'tablename':'Update Successful'})
 
@@ -22,7 +23,7 @@ def create_general(request):
     form=general_form(request.POST or None)
     if form.is_valid():
         form.save()
-        return redirect('create_nutrition')
+        return redirect('create_nutrition',gip=form.cleaned_data['animal_id'])
     context={
         'form':form,
         'tablename': 'General Indentification And Parentage'
@@ -42,7 +43,7 @@ def create_disposal(request):
 
     return render(request,"formtemplate.html",context)
 
-def create_nutrition(request):
+def create_nutrition(request,gip):
     form=nutrition_form(request.POST or None)
     if form.is_valid():
         form.save()
