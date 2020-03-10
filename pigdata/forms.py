@@ -65,7 +65,7 @@ class economics_form(forms.ModelForm):
             'amount_realized': 'Amount Realized',
         }
 
-class efficiency_form_male(forms.ModelForm):
+class efficiency_form_female(forms.ModelForm):
     class Meta:
         model=efficiency_parameter
         fields='__all__'
@@ -74,8 +74,7 @@ class efficiency_form_male(forms.ModelForm):
             'dow': 'Date Of Weaning',
             'weaning_age': 'Age At Weaning',
             'weaning_weight': 'Weaning Weight',
-            'dos': 'Date of Separation From Female Animal',
-            'doc': 'Date of Castration',
+            'dos': 'Date of Separation From Male Animal',
             'dosm': 'Date of Sexual Maturity',
             'sexual_maturity_weight': 'Weight At Sexual Maturity',
             'weight_six': 'Weight At Six Months',
@@ -83,7 +82,7 @@ class efficiency_form_male(forms.ModelForm):
             'conform_at_eight': 'Conformation At Eight Months',
         }
 
-class efficiency_form_female(forms.ModelForm):
+class efficiency_form_male(forms.ModelForm):
     class Meta:
         model=efficiency_parameter
         fields='__all__'
@@ -142,9 +141,12 @@ class service_form_female(forms.ModelForm):
         fields='__all__'
         labels={
             'gip': 'Identification Number',
-            'sow_no': 'SOW Number',
+            'boar_no':'Boar Number',
             'dos': 'Date of Service',
+            'nos': 'Nature Of Service',
             'dof': 'Date Of Farrowing',
+            'dow': 'Date of Weaning',
+            'interfarrowing_interval':'Interfarrowing Interval',
             'parity': 'Parity',
             'born_male': 'Number of male born',
             'born_female': 'Number of male born',
@@ -155,4 +157,5 @@ class service_form_female(forms.ModelForm):
             'total_weaned': 'Number Of Total Weaned',
             'weaning_weight': 'Weaning Weight',
             'still_birth_abnormality': 'Still Birth Or Abnormality',
+            'date_of_abortion':'Date Of Abortion',
         }

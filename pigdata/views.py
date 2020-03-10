@@ -50,6 +50,14 @@ def registeruser(request):
 
     return render(request, "register.html", context)
 
+@login_required(login_url='loginuser')
+def maleorfemaleupdate(request):
+    return render(request,"maleorfemaleupdate.html", context={'tablename':'Update male or female ?'})
+
+@login_required(login_url='loginuser')
+def maleorfemalecreate(request):
+    return render(request,"maleorfemalecreate.html", context={'tablename':'Create male or female ?'})
+
 
 @login_required(login_url='loginuser')
 def successupdate(request):
@@ -67,13 +75,13 @@ def index(request):
     return render(request, "index.html", context={'tablename':'Welcome'})
 
 @login_required(login_url='loginuser')
-def create_general(request):
+def create_general(request, gender):
     form=general_form()
     if request.method=='POST':
         form=general_form(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('create_nutrition',animal_id=str(form.cleaned_data['animal_id']))
+            return redirect('create_nutrition',animal_id=str(form.cleaned_data['animal_id']), gender=gender)
     context={
         'form':form,
         'tablename': 'General Indentification And Parentage'
@@ -82,7 +90,7 @@ def create_general(request):
     return render(request,"create/create_general.html",context)
 
 @login_required(login_url='loginuser')
-def create_disposal(request,animal_id):
+def create_disposal(request, gender, animal_id):
     form=disposal_form(initial={'gip':animal_id})
     if request.method=='POST':    
         form=disposal_form(request.POST)
@@ -98,7 +106,7 @@ def create_disposal(request,animal_id):
     return render(request,"create/create_disposal.html",context)
 
 @login_required(login_url='loginuser')
-def create_nutrition(request,animal_id):
+def create_nutrition(request, gender, animal_id):
     animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
     form=nutrition_form(initial={'gip':animal})
     if request.method=='POST':
@@ -108,7 +116,7 @@ def create_nutrition(request,animal_id):
             print("valid")
             form.save()
             print("saved")
-            return redirect('create_efficiency',animal_id=animal_id)
+            return redirect('create_efficiency',animal_id=animal_id, gender=gender)
     context={
         'form':form,
         'tablename': 'Nutrition And Feeding'
@@ -117,14 +125,14 @@ def create_nutrition(request,animal_id):
     return render(request,"create/create_nutrition.html",context)
 
 @login_required(login_url='loginuser')
-def create_economics(request,animal_id):
+def create_economics(request, gender, animal_id):
     animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
     form=economics_form(initial={'gip':animal})
     if request.method=='POST':
         form=economics_form(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('create_disposal',animal_id=animal_id)
+            return redirect('create_disposal',animal_id=animal_id, gender=gender)
     context={
         'form':form,
         'tablename':'Economics'
@@ -133,23 +141,39 @@ def create_economics(request,animal_id):
     return render(request,"create/create_economics.html",context)
 
 @login_required(login_url='loginuser')
-def create_efficiency(request,animal_id):
+def create_efficiency(request, gender,animal_id):
     animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
-    form=efficiency_form(initial={'gip':animal})
-    if request.method=='POST':    
-        form=efficiency_form(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('create_qualification',animal_id=animal_id)
-    context={
-        'form':form,
-        'tablename':'Efficiency Parameter'
-    }
+    if gender='male':
+        form=efficiency_form(initial={'gip':animal})
+        if request.method=='POST':    
+            form=efficiency_form(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('create_qualification',animal_id=animal_id, gender=gender)
+        context={
+            'form':form,
+            'tablename':'Efficiency Parameter'
+        }
 
-    return render(request,"create/create_efficiency.html",context)
+        return render(request,"create/create_efficiency_male.html",context)
+    elif gender=='female':
+        form=efficiency_form(initial={'gip':animal})
+        if request.method=='POST':    
+            form=efficiency_form(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('create_qualification',animal_id=animal_id, gender=gender)
+        context={
+            'form':form,
+            'tablename':'Efficiency Parameter'
+        }
+
+        return render(request,"create/create_efficiency_female.html",context)
 
 @login_required(login_url='loginuser')
-def create_qualification(request,animal_id):
+def create_qualification(request, gender, animal_id):
+    if gender=='female':
+        return redirect('create_service',animal_id=animal_id, gender=gender)
     animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
     form=qualification_form(initial={'gip':animal})
     if request.method=='POST':    
@@ -165,24 +189,37 @@ def create_qualification(request,animal_id):
     return render(request,"create/create_qualification.html",context)
 
 @login_required(login_url='loginuser')
-def create_service(request,animal_id):
+def create_service(request, gender, animal_id):
     animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
-    form=service_form(initial={'gip':animal})
-    if request.method=='POST':    
-        form=service_form(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('create_economics',animal_id=animal_id)
-    context={
-        'form':form,
-        'tablename': 'Service Record And Litter Character'
-    }
+    if gender=='male':
+    
+        form=service_form(initial={'gip':animal})
+        if request.method=='POST':    
+            form=service_form(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('create_economics',animal_id=animal_id)
+        context={
+            'form':form,
+            'tablename': 'Service Record And Litter Character'
+        }
 
-    return render(request,"create/create_service.html",context)
-
+        return render(request,"create/create_service.html",context)
+    elif gender=='female':
+        form=service_form(initial={'gip':animal})
+        if request.method=='POST':    
+            form=service_form(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('create_economics',animal_id=animal_id)
+        context={
+            'form':form,
+            'tablename': 'Service Record And Litter Character'
+        }
+        return render(request,"create/create_service.html",context)
 
 @login_required(login_url='loginuser')
-def update_general(request, animal_id):
+def update_general(request, gender, animal_id):
     animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
     form=general_form(instance=animal)
     if request.method=='POST':
@@ -199,7 +236,7 @@ def update_general(request, animal_id):
 
 
 @login_required(login_url='loginuser')
-def update_disposal(request, animal_id):
+def update_disposal(request, gender, animal_id):
     obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
     animal=disposal_culling.objects.get(gip=obj)
     form=disposal_form(instance=animal)
@@ -216,7 +253,7 @@ def update_disposal(request, animal_id):
     return render(request,"formtemplate.html",context)
 
 @login_required(login_url='loginuser')
-def update_nutrition(request, animal_id):
+def update_nutrition(request, gender, animal_id):
     obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
     animal=nutrition_and_feeding.objects.get(gip=obj)
     form=nutrition_form(instance=animal)
@@ -233,7 +270,7 @@ def update_nutrition(request, animal_id):
     return render(request,"formtemplate.html",context)
 
 @login_required(login_url='loginuser')
-def update_economics(request, animal_id):
+def update_economics(request, gender, animal_id):
     obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
     animal=economics.objects.get(gip=obj)
     form=economics_form(instance=animal)
@@ -250,24 +287,39 @@ def update_economics(request, animal_id):
     return render(request,"formtemplate.html",context)
 
 @login_required(login_url='loginuser')
-def update_efficiency(request, animal_id):
+def update_efficiency(request, gender, animal_id):
     obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
-    animal=efficiency_parameter.objects.get(gip=obj)
-    form=efficiency_form(instance=animal)
-    if request.method=='POST':
-        form=efficiency_form(request.POST, instance=animal)
-        if form.is_valid():
-            form.save()
-            return redirect('successupdate')
-    context={
-        'form':form,
-        'tablename': 'Efficiency Parameter'
-    }
+    if gender=='male':
+        animal=efficiency_parameter.objects.get(gip=obj)
+        form=efficiency_form(instance=animal)
+        if request.method=='POST':
+            form=efficiency_form(request.POST, instance=animal)
+            if form.is_valid():
+                form.save()
+                return redirect('successupdate')
+        context={
+            'form':form,
+            'tablename': 'Efficiency Parameter'
+        }
 
-    return render(request,"formtemplate.html",context)
+        return render(request,"formtemplate.html",context)
+    elif gender=='female':
+        animal=efficiency_parameter.objects.get(gip=obj)
+        form=efficiency_form(instance=animal)
+        if request.method=='POST':
+            form=efficiency_form(request.POST, instance=animal)
+            if form.is_valid():
+                form.save()
+                return redirect('successupdate')
+        context={
+            'form':form,
+            'tablename': 'Efficiency Parameter'
+        }
+
+        return render(request,"formtemplate.html",context)
 
 @login_required(login_url='loginuser')
-def update_qualification(request, animal_id):
+def update_qualification(request, gender, animal_id):
     obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
     animal=qualification_boar.objects.get(gip=obj)
     form=qualification_form(instance=animal)
@@ -284,21 +336,34 @@ def update_qualification(request, animal_id):
     return render(request,"formtemplate.html",context)
 
 @login_required(login_url='loginuser')
-def update_service(request, animal_id):
+def update_service(request, gender, animal_id):
     obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
-    animal=service_record.objects.get(gip=obj)
-    form=service_form(instance=animal)
-    if request.method=='POST':
-        form=service_form(request.POST, instance=animal)
-        if form.is_valid():
-            form.save()
-            return redirect('successupdate')
-    context={
-        'form':form,
-        'tablename': 'Service Record And Litter Character'
-    }
+    if gender=='male':
+        animal=service_record.objects.get(gip=obj)
+        form=service_form(instance=animal)
+        if request.method=='POST':
+            form=service_form(request.POST, instance=animal)
+            if form.is_valid():
+                form.save()
+                return redirect('successupdate')
+        context={
+            'form':form,
+            'tablename': 'Service Record And Litter Character'
+        }
 
-    return render(request,"formtemplate.html",context)
+        return render(request,"formtemplate.html",context)
+    elif gender=='female':
+        animal=service_record.objects.get(gip=obj)
+        form=service_form(instance=animal)
+        if request.method=='POST':
+            form=service_form(request.POST, instance=animal)
+            if form.is_valid():
+                form.save()
+                return redirect('successupdate')
+        context={
+            'form':form,
+            'tablename': 'Service Record And Litter Character'
+        }
 
 
     
