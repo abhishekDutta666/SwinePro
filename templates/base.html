@@ -16,6 +16,9 @@
           <img src="{% static '/images/pig_image.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
           Swine Pro
         </a>
+        {% if request.user.is_authenticated %}
+        <span>hello {{request.user}} ! <a href="{% url 'logoutuser' %}">Logout</a></span>
+        {% endif %}
       </nav>
     
 

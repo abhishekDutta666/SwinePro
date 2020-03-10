@@ -2,7 +2,7 @@ from django.db import models
 
 class general_identification_and_parentage(models.Model):
     animal_id=models.CharField(max_length=20)
-    #gender=models.charField(max_length=8, choices=(('Male','Male'),('Female','Female')), default='Male')
+    gender=models.charField(max_length=8, choices=(('Male','Male'),('Female','Female')), default='Male')
     breed=models.CharField(max_length=20, blank=True)
     dam_no=models.CharField(max_length=20, blank=True)
     sire_no=models.CharField(max_length=20, blank=True)
@@ -56,7 +56,7 @@ class economics(models.Model):
     amount_realized =models.IntegerField(blank=True, null=True)
     
 
-class efficiency_parameter(models.Model):
+class efficiency_parameter_male(models.Model):
     gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
     dow=models.DateField(blank=True,null=True)
     weaning_age=models.IntegerField(blank=True, null=True)
@@ -66,6 +66,20 @@ class efficiency_parameter(models.Model):
     dosm=models.DateField(blank=True,null=True)
     sexual_maturity_weight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
     weight_six=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
+    weight_eight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
+    weaning_eight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
+    conform_at_eight=models.TextField(blank=True)
+
+class efficiency_parameter_female(models.Model):
+    gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    dow=models.DateField(blank=True,null=True)
+    weaning_age=models.IntegerField(blank=True, null=True)
+    weaning_weight=models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    dos=models.DateField(blank=True,null=True)
+    dosm=models.DateField(blank=True,null=True)
+    sexual_maturity_weight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
+    weight_six=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
+    weight_eight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
     weaning_eight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
     conform_at_eight=models.TextField(blank=True)
     
@@ -80,7 +94,7 @@ class qualification_boar(models.Model):
     suitability=models.CharField(max_length=10,choices=(('yes','yes'), ('no','no')), default='no')
     
 
-class service_record(models.Model):
+class service_record_male(models.Model):
     gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
     sow_no=models.CharField(max_length=20, blank=True)
     dos=models.DateField(blank=True,null=True)
@@ -89,10 +103,37 @@ class service_record(models.Model):
     born_male=models.IntegerField(blank=True, null=True)
     born_female=models.IntegerField(blank=True, null=True)
     born_total=models.IntegerField(blank=True, null=True)
-    liiter_weight_birth=models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
+    litter_weight_birth=models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
     weaned_male=models.IntegerField(blank=True, null=True)
     weaned_female=models.IntegerField(blank=True, null=True)
     total_weaned=models.IntegerField(blank=True, null=True)
     weaning_weight=models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     still_birth_abnormality=models.IntegerField(blank=True, null=True)
+
+class service_record_female(models.Model):
+    gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    parity=models.IntegerField(blank=True, null=True)
+    boar_no=models.CharField(max_length=20, blank=True)
+    dos=models.DateField(blank=True,null=True)
+    nos=models.TextField(blank=True)
+    dof=models.DateField(blank=True,null=True)
+    dow=models.DateField(blank=True,null=True)
+    interfarrowing_interval=models.IntegerField(blank=True, null=True)
+    born_male=models.IntegerField(blank=True, null=True)
+    born_female=models.IntegerField(blank=True, null=True)
+    born_total=models.IntegerField(blank=True, null=True)
+    still_birth_abnormality=models.IntegerField(blank=True, null=True)
+    litter_weight_birth=models.DecimalField(max_digits=3, decimal_places=2,blank=True, null=True)
+    weaned_male=models.IntegerField(blank=True, null=True)
+    weaned_female=models.IntegerField(blank=True, null=True)
+    total_weaned=models.IntegerField(blank=True, null=True)
+    weaning_weight=models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    date_of_abortion=models.DateField(blank=True,null=True)
+
+class lifetime_litter_character(models.Model):
+    no_litter_born=models.IntegerField(blank=True, null=True)
+    litter_weight_birth=models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    no_weaning=models.IntegerField(blank=True, null=True)
+    weight_weaning=models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    preweaning_mortality=models.IntegerField(blank=True, null=True)
     

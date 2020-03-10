@@ -1,0 +1,84 @@
+{% extends 'card.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block cardcontent %}
+
+<form method="POST">
+   {% csrf_token %}
+
+  <!-- <div class="">
+                    <input type="text" name="gip" value="{{animal_id}}" class="textinput form-control" id="id_gip" >
+ </div> -->
+ {{ form.gip.as_hidden}}
+  <div class="form-row">
+      <div class="form-group col-md-12">
+        {{ form.dow|as_crispy_field }}
+        {{form.dow.errors}}
+      </div>
+  </div>
+  <div class="form-row">
+
+      <div class="form-group col-md-12">
+      {{ form.weaning_age|as_crispy_field }}
+      {{form.weaning_age.errors}}
+        </div>
+  </div>
+  <div class="form-row">
+
+        <div class="form-group col-md-12">
+          {{ form.weaning_weight|as_crispy_field }}
+          {{form.weaning_weight.errors}}
+        </div>
+  </div>
+  <div class="form-row">
+
+      <div class="form-group col-md-12">
+          {{ form.dos|as_crispy_field }}
+          {{form.dos.errors}}
+      </div> 
+  </div>
+  <div class="form-row">
+
+      <div class="form-group col-md-12">
+          {{ form.doc|as_crispy_field }}
+          {{form.doc.errors}}
+      </div> 
+  </div>
+  <div class="form-row">
+
+      <div class="form-group col-md-12">
+          {{ form.dosm|as_crispy_field }}
+          {{form.dosm.errors}}
+      </div> 
+  </div>
+  <div class="form-row">
+      <div class="form-group col-md-12">
+          {{ form.sexual_maturity_weight|as_crispy_field }}
+          {{form.sexual_maturity_weight.errors}}
+      </div>
+</div>
+<div class="form-row">
+      <div class="form-group col-md-12">
+          {{ form.weight_six|as_crispy_field }}
+          {{form.weight_six.errors}}
+      </div>
+</div>
+
+<div class="form-row">
+      <div class="form-group col-md-12">
+          {{ form.weaning_eight|as_crispy_field }}
+          {{form.weaning_eight.errors}}
+      </div>
+</div>
+<div class="form-row">
+      <div class="form-group col-md-12">
+          {{ form.conform_at_eight|as_crispy_field }}
+          {{form.conform_at_eight.errors}}
+      </div>
+</div>
+
+
+  <button class="btn btn-success btn-lg float-right" type="submit">Next</button>
+</form>
+
+{% endblock cardcontent %}

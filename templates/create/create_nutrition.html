@@ -1,0 +1,39 @@
+{% extends 'card.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block cardcontent %}
+
+<form method="POST">
+   {% csrf_token %}
+
+  {{ form.gip.as_hidden}}                                                                                                           
+  <div class="form-row">
+      <div class="form-group col-md-12">
+        {{ form.treatment|as_crispy_field }}
+      </div>
+  </div>
+  <div class="form-row">
+
+      <div class="form-group col-md-12">
+      {{ form.start_date|as_crispy_field }}
+        </div>
+  </div>
+  <div class="form-row">
+
+        <div class="form-group col-md-12">
+          {{ form.end_date|as_crispy_field }}
+        </div>
+  </div>
+  <div class="form-row">
+
+      <div class="form-group col-md-12">
+          {{ form.remarks|as_crispy_field }}
+      </div> 
+  </div>
+  
+
+
+  <button class="btn btn-success btn-lg float-right" type="submit">Next</button>
+</form>
+
+{% endblock cardcontent %}

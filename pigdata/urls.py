@@ -3,8 +3,9 @@ from . import views
 
 urlpatterns=[
     path('', views.index, name='index'),
-
-
+    path('login/', views.loginuser, name='loginuser'),
+    path('register/', views.registeruser, name='registeruser'),
+    path('logout/', views.logoutuser, name='logoutuser'),
     path('dbsuccess/', views.dbsuccess, name='dbsuccess'),
     path('update/success/', views.successupdate, name='successupdate'), 
 
@@ -19,12 +20,15 @@ urlpatterns=[
     path('create/qualification/<str:animal_id>', views.create_qualification, name='create_qualification'),
     path('create/service/<str:animal_id>', views.create_service, name='create_service'),
 
-    path('update/', views.updateform, name='updateform'),
+    path('update/male', views.updateform, name='updateform'),
+    path('update/female', views.updateform, name='updateform'),
     path('update/general/<str:animal_id>', views.update_general, name='update_general'),
     path('update/disposal/<str:animal_id>', views.update_disposal, name='update_disposal'),
     path('update/nutrition/<str:animal_id>', views.update_nutrition, name='update_nutrition'),
     path('update/economics/<str:animal_id>', views.update_economics, name='update_economics'),
-    path('update/efficiency/<str:animal_id>', views.update_efficiency, name='update_efficiency'),
+    path('update/male/efficiency/<str:animal_id>', views.update_efficiency, name='update_efficiency'),
+    path('update/female/efficiency/<str:animal_id>', views.update_efficiency, name='update_efficiency'),
     path('update/qualification/<str:animal_id>', views.update_qualification, name='update_qualification'),
-    path('update/service/<str:animal_id>', views.update_service, name='update_service'),
+    path('update/male/service/<str:animal_id>', views.update_service, name='update_service'),
+    path('update/female/service/<str:animal_id>', views.update_service, name='update_service'),
 ]

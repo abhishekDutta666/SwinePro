@@ -1,5 +1,18 @@
 from django import forms
+from django.forms import ModelForm
 from .models import *
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+class CreateUserForm(UserCreationForm):
+    class Meta:
+        model=User
+        fields=['username','email', 'password1', 'password2']
+        labels={'username': 'Identification'}
+
+class loginuserform(forms.Form):
+    username=forms.CharField(label='Identification', max_length=150)
+    password=forms.CharField(label='Password', max_length=150)
 
 class general_form(forms.ModelForm):
     class Meta:
@@ -52,7 +65,25 @@ class economics_form(forms.ModelForm):
             'amount_realized': 'Amount Realized',
         }
 
-class efficiency_form(forms.ModelForm):
+class efficiency_form_male(forms.ModelForm):
+    class Meta:
+        model=efficiency_parameter
+        fields='__all__'
+        labels={
+            'gip': 'Identification Number',
+            'dow': 'Date Of Weaning',
+            'weaning_age': 'Age At Weaning',
+            'weaning_weight': 'Weaning Weight',
+            'dos': 'Date of Separation From Female Animal',
+            'doc': 'Date of Castration',
+            'dosm': 'Date of Sexual Maturity',
+            'sexual_maturity_weight': 'Weight At Sexual Maturity',
+            'weight_six': 'Weight At Six Months',
+            'weaning_eight': 'Weight At Eight Months',
+            'conform_at_eight': 'Conformation At Eight Months',
+        }
+
+class efficiency_form_female(forms.ModelForm):
     class Meta:
         model=efficiency_parameter
         fields='__all__'
@@ -84,7 +115,7 @@ class qualification_form(forms.ModelForm):
             'suitability': 'Suitability For Insemination',
         }
 
-class service_form(forms.ModelForm):
+class service_form_male(forms.ModelForm):
     class Meta:
         model=service_record
         fields='__all__'
@@ -97,7 +128,28 @@ class service_form(forms.ModelForm):
             'born_male': 'Number of male born',
             'born_female': 'Number of male born',
             'born_total': 'Total Number',
-            'liiter_weight_birth': 'Litter Weight At Birth',
+            'litter_weight_birth': 'Litter Weight At Birth',
+            'weaned_male': 'Number Of Weaned Male',
+            'weaned_female': 'Number Of Weaned Female',
+            'total_weaned': 'Number Of Total Weaned',
+            'weaning_weight': 'Weaning Weight',
+            'still_birth_abnormality': 'Still Birth Or Abnormality',
+        }
+
+class service_form_female(forms.ModelForm):
+    class Meta:
+        model=service_record
+        fields='__all__'
+        labels={
+            'gip': 'Identification Number',
+            'sow_no': 'SOW Number',
+            'dos': 'Date of Service',
+            'dof': 'Date Of Farrowing',
+            'parity': 'Parity',
+            'born_male': 'Number of male born',
+            'born_female': 'Number of male born',
+            'born_total': 'Total Number',
+            'litter_weight_birth': 'Litter Weight At Birth',
             'weaned_male': 'Number Of Weaned Male',
             'weaned_female': 'Number Of Weaned Female',
             'total_weaned': 'Number Of Total Weaned',
