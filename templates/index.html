@@ -1,19 +1,18 @@
-
 {% extends 'card.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block cardcontent %}
 
-<form action="/create/general" method="GET">
+<form action="/dataentry" method="GET">
     <div class="row justify-content-center py-2">
-            <button class="btn btn-success btn-lg" type="submit">Create New Pig</button>
+            <button class="btn btn-success btn-lg" type="submit">Data Entry</button>
     </div>
         
 </form>
 
-<form action="/update" method="GET">
+<form action="/report" method="GET">
     <div class="row justify-content-center py-2">
-        <button class="btn btn-success btn-lg float-right" type="submit">Update Old Pig</button>
+        <button class="btn btn-success btn-lg float-right" type="submit">Report Generation</button>
     </div>
 </form>
 

@@ -3,11 +3,6 @@
 {% load crispy_forms_tags %}
 {% block cardcontent %}
 
-<div class="row">
-    <div class="col-12">
-        <input type="text" name="animal_id" id="animal_id">
-    </div>    
-</div>
 
 
 <form id="gipform">
@@ -54,7 +49,7 @@
         console.log("click");
         var gipform=document.getElementById("gipform");
         var s1='general/';
-        var s=document.getElementById("animal_id").value;
+        var s={{animal_id}};
         var x=s1.concat(s);
         gipform.action=x;
         gipform.submit();
@@ -66,8 +61,8 @@
     function epfunc(){
         console.log("click");
         var epform=document.getElementById("epform");
-        var s1='male/efficiency/';
-        var s=document.getElementById("animal_id").value;
+        var s1='efficiency/';
+        var s={{animal_id}};
         var x=s1.concat(s);
         epform.action=x;
         epform.submit();
@@ -80,7 +75,7 @@
         console.log("click");
         var qbbform=document.getElementById("qbbform");
         var s1='qualification/';
-        var s=document.getElementById("animal_id").value;
+        var s={{animal_id}};
         var x=s1.concat(s);
         qbbform.action=x;
         qbbform.submit();
@@ -92,8 +87,8 @@
     function srlcfunc(){
         console.log("click");
         var srlcform=document.getElementById("srlcform");
-        var s1='male/service/';
-        var s=document.getElementById("animal_id").value;
+        var s1='service/';
+        var s={{animal_id}};
         var x=s1.concat(s);
         srlcform.action=x;
         srlcform.submit();
@@ -106,7 +101,7 @@
         console.log("click");
         var nfform=document.getElementById("nfform");
         var s1='nutrition/';
-        var s=document.getElementById("animal_id").value;
+        var s={{animal_id}};
         var x=s1.concat(s);
         nfform.action=x;
         nfform.submit();
@@ -119,7 +114,7 @@
         console.log("click");
         var dcform=document.getElementById("dcform");
         var s1='disposal/';
-        var s=document.getElementById("animal_id").value;
+        var s={{animal_id}};
         var x=s1.concat(s);
         dcform.action=x;
         dcform.submit();
@@ -132,7 +127,7 @@
         console.log("click");
         var ecoform=document.getElementById("ecoform");
         var s1='economics/';
-        var s=document.getElementById("animal_id").value;
+        var s={{animal_id}};
         var x=s1.concat(s);
         ecoform.action=x;
         ecoform.submit();

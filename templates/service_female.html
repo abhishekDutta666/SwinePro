@@ -1,0 +1,79 @@
+{% extends 'card.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block cardcontent %}
+
+
+<form action="" method="POST">
+  {% csrf_token %}
+  {{form|crispy}}
+  <button type="submit">Add</button>
+</form>
+
+  <div class="table-responsive">
+      <table class="table table-bordered table-striped ">
+
+
+          <thead id="theadthid">
+            <tr >
+            <th scope="col"> Serial Number</th>
+            <th scope="col"> Identification Number</th>
+            <th scope="col"> Boar Number</th>
+            <th scope="col"> Date of Service</th>
+            <th scope="col"> Nature Of Service</th>
+            <th scope="col"> Date Of Farrowing</th>
+            <th scope="col"> Date of Weaning</th>
+            <th scope="col"> Interfarrowing Interval</th>
+            <th scope="col"> Parity</th>
+            <th scope="col"> Number of male born</th>
+            <th scope="col"> Number of female born</th>
+            <th scope="col"> Total Number</th>
+            <th scope="col"> Litter Weight At Birth</th>
+            <th scope="col"> Number Of Weaned Male</th>
+            <th scope="col"> Number Of Weaned Female</th>
+            <th scope="col"> Number Of Total Weaned</th>
+            <th scope="col"> Weaning Weight</th>
+            <th scope="col"> Still Birth Or Abnormality</th>
+            <th scope="col"> Date Of Abortion</th>
+            <th scope="col"> Delete</th>      
+              </tr>
+          </thead>
+
+          <tbody id="tbodydata">
+
+
+{% for service in services %}
+          <tr>
+            <th scope="row">{{ forloop.counter}}</th>
+            <td>{{ service.gip }}</td>
+            <td>{{ service.boar_no }}</td>
+            <td>{{ service.dos }}</td>
+            <td>{{ service.nos }}</td>
+            <td>{{ service.dof }}</td>
+            <td>{{ service.dow }}</td>
+            <td>{{ service.interfarrowing_interval }}</td>
+            <td>{{ service.parity }}</td>
+            <td>{{ service.born_male }}</td>
+            <td>{{ service.born_female }}</td>
+            <td>{{ service.born_total }}</td>
+            <td>{{ service.litter_weight_birth }}</td>
+            <td>{{ service.weaned_male }}</td>
+            <td>{{ service.weaned_female }}</td>
+            <td>{{ service.total_weaned }}</td>
+            <td>{{ service.weaning_weight }}</td>
+            <td>{{ service.still_birth_abnormality }}</td>
+            <td>{{ service.date_of_abortion }}</td>
+
+            <td><form action="" method="POST">{% csrf_token %}
+                <button class="btn btn-info form-control"type="submit" name="gip">Delete</button>
+                </form>
+                </td>
+          </tr>
+{% endfor %}
+          </tbody>
+      </table>
+  </div>
+<form action="{% url 'vaccination'  gip %}" method="get">
+  <button class="btn btn-success btn-lg float-right" type="submit">Next</button>
+</form>
+{% endblock %}

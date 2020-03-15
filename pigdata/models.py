@@ -2,7 +2,8 @@ from django.db import models
 
 class general_identification_and_parentage(models.Model):
     animal_id=models.CharField(max_length=20)
-    gender=models.charField(max_length=8, choices=(('Male','Male'),('Female','Female')), default='Male')
+    dob=models.DateField(blank=True,null=True)
+    gender=models.CharField(max_length=8, choices=(('Male','Male'),('Female','Female')), default='Male')
     breed=models.CharField(max_length=20, blank=True)
     dam_no=models.CharField(max_length=20, blank=True)
     sire_no=models.CharField(max_length=20, blank=True)
@@ -20,7 +21,7 @@ class health_parameter_vaccination(models.Model):
     disease=models.CharField(max_length=50, blank=True)
     make=models.CharField(max_length=20, blank=True)
     first_dose=models.DateField(blank=True,null=True)
-    booster_does=models.DateField(blank=True,null=True)
+    booster_dose=models.DateField(blank=True,null=True)
     repeat=models.DateField(blank=True,null=True)
     
 
@@ -38,13 +39,14 @@ class disposal_culling(models.Model):
     reason=models.TextField(blank=True)
     sale_date=models.DateField(blank=True,null=True)
     weight_sale=models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
-    cause_death=models.TextField(blank=True)
-    date_death=models.DateField(blank=True,null=True)
+    revenue=models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    
     
 
 class nutrition_and_feeding(models.Model):
-    gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    gip = models.ForeignKey(general_identification_and_parentage, on_delete=models.CASCADE)
     treatment=models.TextField(blank=True)
+    make=models.TextField(blank=True)
     start_date=models.DateField(blank=True,null=True)
     end_date=models.DateField(blank=True,null=True)
     remarks=models.TextField(blank=True)
@@ -55,19 +57,24 @@ class economics(models.Model):
     book_value=models.DecimalField(max_digits=10, decimal_places=6, blank=True, null=True)
     amount_realized =models.IntegerField(blank=True, null=True)
     
+class death(models.Model):
+    gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    date_death=models.DateField(blank=True,null=True)
+    postmortem_findings=models.TextField(blank=True)
+    cause_death=models.TextField(blank=True)
 
 class efficiency_parameter_male(models.Model):
     gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
     dow=models.DateField(blank=True,null=True)
     weaning_age=models.IntegerField(blank=True, null=True)
     weaning_weight=models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    litter_size_weaning=models.IntegerField(blank=True, null=True)
     dos=models.DateField(blank=True,null=True)
     doc=models.DateField(blank=True,null=True)
     dosm=models.DateField(blank=True,null=True)
     sexual_maturity_weight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
     weight_six=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
     weight_eight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
-    weaning_eight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
     conform_at_eight=models.TextField(blank=True)
 
 class efficiency_parameter_female(models.Model):
@@ -75,14 +82,14 @@ class efficiency_parameter_female(models.Model):
     dow=models.DateField(blank=True,null=True)
     weaning_age=models.IntegerField(blank=True, null=True)
     weaning_weight=models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    litter_size_weaning=models.IntegerField(blank=True, null=True)
     dos=models.DateField(blank=True,null=True)
+    doc=models.DateField(blank=True,null=True)
     dosm=models.DateField(blank=True,null=True)
     sexual_maturity_weight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
     weight_six=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
     weight_eight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
-    weaning_eight=models.DecimalField(max_digits=6, decimal_places=2,blank=True, null=True)
     conform_at_eight=models.TextField(blank=True)
-    
 
 class qualification_boar(models.Model):
     gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
@@ -95,7 +102,7 @@ class qualification_boar(models.Model):
     
 
 class service_record_male(models.Model):
-    gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    gip = models.ForeignKey(general_identification_and_parentage, on_delete=models.CASCADE)
     sow_no=models.CharField(max_length=20, blank=True)
     dos=models.DateField(blank=True,null=True)
     dof=models.DateField(blank=True,null=True)
@@ -111,7 +118,7 @@ class service_record_male(models.Model):
     still_birth_abnormality=models.IntegerField(blank=True, null=True)
 
 class service_record_female(models.Model):
-    gip = models.OneToOneField(general_identification_and_parentage, on_delete=models.CASCADE)
+    gip = models.ForeignKey(general_identification_and_parentage, on_delete=models.CASCADE)
     parity=models.IntegerField(blank=True, null=True)
     boar_no=models.CharField(max_length=20, blank=True)
     dos=models.DateField(blank=True,null=True)

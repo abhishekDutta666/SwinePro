@@ -6,33 +6,26 @@
 <form method="POST">
    {% csrf_token %}
 
- {{ form.gip.as_hidden}}
+  {{ form.gip.as_hidden}}
   <div class="form-row">
       <div class="form-group col-md-12">
-        {{ form.reason|as_crispy_field }}
+        {{ form.cause_death|as_crispy_field }}
       </div>
   </div>
   <div class="form-row">
 
       <div class="form-group col-md-12">
-      {{ form.sale_date|as_crispy_field }}
+      {{ form.date_death|as_crispy_field }}
         </div>
   </div>
   <div class="form-row">
 
         <div class="form-group col-md-12">
-          {{ form.weight_sale|as_crispy_field }}
-        </div>
-  </div>
-  <div class="form-row">
-
-        <div class="form-group col-md-12">
-          {{ form.revenue|as_crispy_field }}
+          {{ form.postmortem_findings|as_crispy_field }}
         </div>
   </div>
 
-
-  <button class="btn btn-success btn-lg float-right" type="submit">Next</button>
+ <button class="btn btn-success btn-lg float-right" type="submit">Next</button>
 </form>
 
 {% endblock cardcontent %}
