@@ -252,9 +252,10 @@ def vetexam(request, animal_id):
 
 @login_required(login_url='loginuser')
 def deathview(request, animal_id):
-    form=death_form(initial={'gip':animal_id})
+    animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
+    form=death_form(initial={'gip':animal})
     if request.method=='POST':    
-        form=vetexam_form(request.POST)
+        form=death_form(request.POST)
         if form.is_valid():
             form.save()
             return redirect('create_nutrition',animal_id=animal_id)
@@ -392,9 +393,27 @@ def update_disposal(request, animal_id):
 
     return render(request,"create/create_disposal.html",context)
 
+
 @login_required(login_url='loginuser')
 def update_nutrition(request, animal_id):
-    return redirect(create_nutrition,animal_id=animal_id)
+    animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
+    nutritions=nutrition_and_feeding.objects.filter(gip=animal)
+    form=nutrition_form(initial={'gip':animal})
+    if request.method=='POST':
+          
+        form=nutrition_form(request.POST)
+        if form.is_valid():
+            form.save()
+            
+            return redirect('update_nutrition',animal_id=animal_id)
+    context={
+        'tablename':'Nutrition',
+        'form':form,
+        'nutritions': nutritions,
+        'gip':animal_id
+    }
+
+    return render(request,"nutrition_update_template.html",context)
 
 @login_required(login_url='loginuser')
 def update_economics(request, animal_id):
@@ -449,7 +468,6 @@ def update_efficiency(request,animal_id):
 @login_required(login_url='loginuser')
 def update_qualification(request, animal_id):
     obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
-    gender=obj.gender
     animal=qualification_boar.objects.get(gip=obj)
     form=qualification_update_form(instance=animal)
     if request.method=='POST':
@@ -467,32 +485,95 @@ def update_qualification(request, animal_id):
 @login_required(login_url='loginuser')
 def update_death(request, animal_id):
     obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
-    animal=qualification_boar.objects.get(gip=obj)
-    form=qualification_update_form(instance=animal)
+    animal=death.objects.get(gip=obj)
+    form=death_update_form(instance=animal)
     if request.method=='POST':
-        form=qualification_update_form(request.POST, instance=animal)
+        form=death_update_form(request.POST, instance=animal)
         if form.is_valid():
             form.save()
             return redirect('successupdate')
     context={
         'form':form,
-        'tablename': 'Qualification As A Breeding Boar'
+        'tablename': 'Information about death'
     }
 
-    return render(request,"create/create_qualification.html",context)
-
+    return render(request,"create/create_death.html",context)
 
 @login_required(login_url='loginuser')
 def update_service(request, animal_id):
-    return redirect('create_service', animal_id=animal_id)
+    animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
+    gender=animal.gender
+    if gender=='Male':
+        services=service_record_male.objects.filter(gip=animal)
+        form=service_form_male(initial={'gip':animal})
+        if request.method=='POST':    
+            form=service_form_male(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('update_service',animal_id=animal_id)
+        context={
+            'form':form,
+            'services':services,
+            'gip':animal_id,
+            'tablename': 'Service Record And Litter Character'
+        }
 
-@login_required(login_url='loginuser')
-def update_vetexam(request, animal_id):
-    return redirect('vetexam', animal_id=animal_id)
+        return render(request,"service_update_male.html",context)
+    elif gender=='Female':
+        services=service_record_female.objects.filter(gip=animal)
+        form=service_form_female(initial={'gip':animal})
+        if request.method=='POST':    
+            form=service_form_female(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('update_service',animal_id=animal_id)
+        context={
+            'form':form,
+            'services':services,
+            'gip':animal_id,
+            'tablename': 'Service Record And Litter Character'
+        }
+        return render(request,"service_update_female.html",context)
 
 @login_required(login_url='loginuser')
 def update_vaccination(request, animal_id):
-    return redirect('vaccination', animal_id=animal_id)
+    animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
+    vaccinations=health_parameter_vaccination.objects.filter(gip=animal)
+    form=vaccination_form(initial={'gip':animal_id})
+    if request.method=='POST':    
+        form=vaccination_form(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('update_vaccination',animal_id=animal_id)
+    context={
+        'form':form,
+        'vaccinations':vaccinations,
+        'gip':animal_id,
+        'tablename':'Vaccinations'
+    }
+
+    return render(request,"vaccination_update_template.html",context)
+
+@login_required(login_url='loginuser')
+def update_vetexam(request, animal_id):
+    animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
+    vet_exams=health_parameter_vetexam.objects.filter(gip=animal)
+    form=vetexam_form(initial={'gip':animal_id})
+    if request.method=='POST':    
+        form=vetexam_form(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('update_vetexam',animal_id=animal_id)
+    context={
+        'form':form,
+        'vet_exams':vet_exams,
+        'gip':animal_id,
+        'tablename':'Veterinary Exam'
+    }
+
+    return render(request,"vetexam_update_template.html",context)
+
+
 
 
 
@@ -559,39 +640,44 @@ def history(request, animal_id):
     animal_disposal_culling=disposal_culling.objects.get(gip=animal)
     animal_nutrition_and_feeding=nutrition_and_feeding.objects.filter(gip=animal)
     animal_economics=economics.objects.get(gip=animal)
+    animal_death=death.objects.get(gip=animal)
     if animal_gender=='Male':
         animal_efficiency_parameter_male=efficiency_parameter_male.objects.get(gip=animal)
         animal_qualification_boar=qualification_boar.objects.get(gip=animal)
         animal_service_record_male=service_record_male.objects.filter(gip=animal)
         context={
-        'infor':animal,
-        'vaccination':animal_health_parameter_vaccination,
-        'vetexam':animal_health_parameter_vetexam,
+        'tablename':'History Sheet',
+        'death':animal_death,
+        'gen':animal,
+        'vaccinations':animal_health_parameter_vaccination,
+        'vetexams':animal_health_parameter_vetexam,
         'disposal':animal_disposal_culling,
-        'nutrition':animal_nutrition_and_feeding,
-        'economics':animal_economics,
+        'nutritions':animal_nutrition_and_feeding,
+        'economic':animal_economics,
         'efficiency':animal_efficiency_parameter_male,
         'qualification':animal_qualification_boar,
-        'service':animal_service_record_male
+        'services':animal_service_record_male
         }
-        return render(request, "historydata.html", context)
+        return render(request, "historydatamale.html", context)
     
     elif animal_gender=='Female':
         animal_efficiency_parameter_female=efficiency_parameter_female.objects.get(gip=animal)
         animal_service_record_female=service_record_female.objects.filter(gip=animal)
-        animal_lifetime_litter_character=lifetime_litter_character.objects.get(gip=animal)
+        #animal_lifetime_litter_character=lifetime_litter_character.objects.get(gip=animal)
         context={
-        'infor':animal,
-        'vaccination':animal_health_parameter_vaccination,
-        'vetexam':animal_health_parameter_vetexam,
+        'tablename':'History Sheet',
+        'death':death,
+        'gen':animal,
+        'vaccinations':animal_health_parameter_vaccination,
+        'vetexams':animal_health_parameter_vetexam,
         'disposal':animal_disposal_culling,
-        'nutrition':animal_nutrition_and_feeding,
-        'economics':animal_economics,
-        'service':animal_service_record_female,
+        'nutritions':animal_nutrition_and_feeding,
+        'economic':animal_economics,
+        'services':animal_service_record_female,
         'efficiency':animal_efficiency_parameter_female,
-        'litter':animal_lifetime_litter_character
+        #'litter':animal_lifetime_litter_character
         }
-        return render(request, "historydata.html", context)
+        return render(request, "historydatafemale.html", context)
 
 @login_required(login_url='loginuser')
 def pigletborn(request):
@@ -611,16 +697,25 @@ def pigletborn(request):
                 elif pig.gender=='Female':
                     femalecount+=1
             context={
+                'tablename':'Number of piglet Born',
                 'malecount':malecount,
                 'femalecount':femalecount,
-                'totalcount':totalcount
+                'totalcount':totalcount,
+                'form':form
             }
             return render(request, "pigletborn.html",context)
 
 
 
     form=datetodate()
-    return render(request, "pigletborn.html", {'form':form})
+    context={
+                'tablename':'Number of piglet Born',
+                'malecount':'no input',
+                'femalecount':'no input',
+                'totalcount':'no input',
+                'form':form
+            }
+    return render(request, "pigletborn.html", context)
 
 
 @login_required(login_url='loginuser')
@@ -628,13 +723,15 @@ def pigletweaned(request):
     if request.method=='POST':
         form=datetodate(request.POST)
         if form.is_valid():
-            fromdate=form.cleaned_data['fromdate']
-            todate=form.cleaned_data['todate']
+            fromdate=form.cleaned_data['from_date']
+            todate=form.cleaned_data['to_date']
             allweanedmale=efficiency_parameter_male.objects.filter(dow__range=(fromdate,todate))
             allweanedfemale=efficiency_parameter_female.objects.filter(dow__range=(fromdate,todate))
             totalcount=0
             femalecount=0
             malecount=0
+            maleweight=0
+            femaleweight=0
             for pig in allweanedmale:
                 totalcount+=1
                 malecount+=1
@@ -649,16 +746,18 @@ def pigletweaned(request):
                 'totalcount':totalcount,
                 'maleweight':maleweight,
                 'femaleweight':femaleweight,
+                'form':form
             }
             return render(request, "pigletweaned.html",context)
     form=datetodate()
     context={
                 'tablename':'Piglets Weaned',
-                'malecount':malecount,
-                'femalecount':femalecount,
-                'totalcount':totalcount,
-                'maleweight':maleweight,
-                'femaleweight':femaleweight,
+                'malecount':'no input',
+                'femalecount':'no input',
+                'totalcount':'no input',
+                'maleweight':'no input',
+                'femaleweight':'no input',
+                'form':form
             }
     return render(request, "pigletweaned.html", context)
 
@@ -669,12 +768,14 @@ def pigmortality(request):
     if request.method=='POST':
         form=datetodate(request.POST)
         if form.is_valid():
-            fromdate=form.cleaned_data['fromdate']
-            todate=form.cleaned_data['todate']
+            fromdate=form.cleaned_data['from_date']
+            todate=form.cleaned_data['to_date']
             alldead=death.objects.filter(date_death__range=(fromdate,todate))
+            print(alldead)
             preweaning=0
             postweaning=0
             for pig in alldead:
+                print(pig.gip.gender)
                 if pig.gip.gender=='Male':
                     obj=efficiency_parameter_male.objects.get(gip=pig.gip)
                     if obj.dow==None:
@@ -690,8 +791,8 @@ def pigmortality(request):
             context={
                 'tablename':'Pig Mortality',
                 'form':form,
-                'postweaning':7,
-                'preweaning':8,
+                'postweaning':postweaning,
+                'preweaning':preweaning,
             }
             return render(request, "pigmortality.html",context)
     form=datetodate()
@@ -709,8 +810,8 @@ def revenue_received(request):
     if request.method=='POST':
         form=datetodate(request.POST)
         if form.is_valid():
-            fromdate=form.cleaned_data['fromdate']
-            todate=form.cleaned_data['todate']
+            fromdate=form.cleaned_data['from_date']
+            todate=form.cleaned_data['to_date']
             revenues=disposal_culling.objects.filter(sale_date__range=(fromdate,todate))
             total=0
             for r in revenues:
@@ -725,7 +826,7 @@ def revenue_received(request):
     context={
                 'tablename':'Revenue Received',
                 'form':form,
-                'total':0
+                'total':None
             }
     return render(request, "revenuereceived.html", context)
 
@@ -789,6 +890,7 @@ def disease(request):
         else:
             diseaseDict[cause]=1
     context={
-        'disease':diseaseDict
+        'tablename':'Disease List',
+        'diseases':diseaseDict
     }
-    return render(request, sample.html, context)
+    return render(request, "disease.html", context)

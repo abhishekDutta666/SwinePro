@@ -3,54 +3,58 @@
 {% load crispy_forms_tags %}
 {% block cardcontent %}
 
+<div class="row justify-content-center py-2">
+<input type="text" name="num" id="num">        
 
+</div>
 
-<form id="historyform">
+<form id="gipform">
 <div class="row justify-content-center py-2">
-        {% csrf_token %}
-        <input type="text" name="animal_id" id="animal_id">
-        <button class="btn btn-success btn-lg" type="button" formaction="" id="history">History Sheet</button>
+        
+        <button class="btn btn-success btn-lg" type="button" formaction="" id="gip">History Sheet</button>
 </div>
 </form>
-<form id="epform">
+<br>
+<br>
+<form id="epform" action="pigletborn">
 <div class="row justify-content-center py-2">
-        <button class="btn btn-success btn-lg" type="button" id="ep">Piglet Born</button>
+        <button class="btn btn-success btn-lg" type="submit" id="ep">Piglet Born</button>
 </div>
 </form>
-<form id="qbbform">
+<form id="qbbform" action="pigletweaned">
 <div class="row justify-content-center py-2">
-        <button class="btn btn-success btn-lg" type="button" id="qbb">Piglet Weaned</button>
+        <button class="btn btn-success btn-lg" type="submit" id="qbb">Piglet Weaned</button>
 </div>
 </form>
-<form id="srlcform">
+<form id="srlcform" action="pigmortality">
 <div class="row justify-content-center py-2">
-        <button class="btn btn-success btn-lg" type="button" id="srlc">Pig Mortality</button>
+        <button class="btn btn-success btn-lg" type="submit" id="srlc">Pig Mortality</button>
 </div>
 </form>
-<form id="nfform">
+<form id="nfform" action="revenue">
 <div class="row justify-content-center py-2">
-        <button class="btn btn-success btn-lg" type="button" id="nf">Revenue Received</button>
+        <button class="btn btn-success btn-lg" type="submit" id="nf">Revenue Received</button>
 </div>
 </form>
-<form id="dcform">
+<form id="dcform" action="disease">
 <div class="row justify-content-center py-2">
-        <button class="btn btn-success btn-lg" type="button" id="dc">Disease List</button>
+        <button class="btn btn-success btn-lg" type="submit" id="dc">Disease List</button>
 </div>
 </form>
-<form id="ecoform">
+<form id="ecoform" action="selectpigs">
 <div class="row justify-content-center py-2">
-        <button class="btn btn-success btn-lg" type="button" id="eco">Select Pigs</button>
+        <button class="btn btn-success btn-lg" type="submit" id="eco">Select Pigs</button>
 </div>
 </form>
 <script>
-    var history=document.getElementById("history");
-    history.addEventListener("click", historyfunc);
+    var gip=document.getElementById("gip");
+    gip.addEventListener("click", gipfunc);
 
-    function historyfunc(){
+    function gipfunc(){
         console.log("click");
-        var gipform=document.getElementById("historyform");
-        var s1='/history/';
-        var s=document.getElementById("animal_id").value();
+        var gipform=document.getElementById("gipform");
+        var s1='history/';
+        var s=document.getElementById("num").value;
         var x=s1.concat(s);
         gipform.action=x;
         gipform.submit();

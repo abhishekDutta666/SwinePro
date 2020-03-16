@@ -20,6 +20,22 @@
         <button class="btn btn-success btn-lg" type="button" id="ep">Efficiency Parameter</button>
 </div>
 </form>
+</form>
+<form id="vetform">
+<div class="row justify-content-center py-2">
+        <button class="btn btn-success btn-lg" type="button" id="vet">Vetexams</button>
+</div>
+</form>
+<form id="vacform">
+<div class="row justify-content-center py-2">
+        <button class="btn btn-success btn-lg" type="button" id="vac">Vaccinations</button>
+</div>
+</form>
+<form id="deathform">
+<div class="row justify-content-center py-2">
+        <button class="btn btn-success btn-lg" type="button" id="death">Death Information</button>
+</div>
+</form>
 <form id="srlcform">
 <div class="row justify-content-center py-2">
         <button class="btn btn-success btn-lg" type="button" id="srlc">Service Record And Litter Character</button>
@@ -121,7 +137,46 @@
         ecoform.submit();
     }
 
+    var death=document.getElementById("death");
+    death.addEventListener("click", deathfunc);
+
+    function deathfunc(){
+        console.log("click");
+        var deathform=document.getElementById("deathform");
+        var s1='death/';
+        var s={{animal_id}};
+        var x=s1.concat(s);
+        deathform.action=x;
+        deathform.submit();
+    }
+
+var vet=document.getElementById("vet");
+    vet.addEventListener("click", vetfunc);
+
+    function vetfunc(){
+        console.log("click");
+        var vetform=document.getElementById("vetform");
+        var s1='vetexam/';
+        var s={{animal_id}};
+        var x=s1.concat(s);
+        vetform.action=x;
+        vetform.submit();
+    }
     
+
+var vac=document.getElementById("vac");
+    vac.addEventListener("click", vacfunc);
+
+    function vacfunc(){
+        console.log("click");
+        var vacform=document.getElementById("vacform");
+        var s1='vaccination/';
+        var s={{animal_id}};
+        var x=s1.concat(s);
+        vacform.action=x;
+        vacform.submit();
+    }
+
     
 </script>
 
