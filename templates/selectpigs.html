@@ -11,9 +11,15 @@
 
 <p>Male</p>
 <p>Total: {{malelen}}</p>
-<p></p>
+{% for i in male %}
+<p>{{i}}</p>
+{% endfor %}
+
 <p>Female</p>
 <p>Total: {{femalelen}}</p>
-<p></p>
+{% for i in female %}
+<p>{{i}}</p>
+{% endfor %}
+
 
 {% endblock cardcontent %}>

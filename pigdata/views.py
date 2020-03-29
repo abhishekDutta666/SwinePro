@@ -837,35 +837,52 @@ def selectpigs(request):
         if form.is_valid():
             n=form.cleaned_data['task']
             num=form.cleaned_data['amount']
+            male=[]
+            female=[]
             if n=='1':
                 maleanimals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__lt=num)
+                for i in maleanimals:
+                    male.append(i.animal_id)
                 femaleanimals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__lt=num)
+                for i in femaleanimals:
+                    female.append(i.animal_id)
                 len_maleanimals=len(maleanimals)
                 len_femaleanimals=len(femaleanimals)
                 
             elif n=='2':
                 maleanimals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__gt=num)
+                for i in maleanimals:
+                    male.append(i.animal_id)
                 femaleanimals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__gt=num)
+                for i in femaleanimals:
+                    female.append(i.animal_id)
                 len_maleanimals=len(maleanimals)
                 len_femaleanimals=len(femaleanimals)
                 
             elif n=='3':
                 maleanimals=efficiency_parameter_male.objects.filter(litter_size_weaning__gte=num)
-                
+                for i in maleanimals:
+                    male.append(i.gip)
                 femaleanimals=efficiency_parameter_female.objects.filter(litter_size_weaning__gte=num)
+                for i in femaleanimals:
+                    female.append(i.gip)
                 len_maleanimals=len(maleanimals)
                 len_femaleanimals=len(femaleanimals)
                 
             elif n=='4':
                 maleanimals=efficiency_parameter_male.objects.filter(litter_size_weaning__exact=num)
+                for i in maleanimals:
+                    male.append(i.gip)
                 len_maleanimals=len(maleanimals)
                 femaleanimals=efficiency_parameter_female.objects.filter(litter_size_weaning__exact=num)
+                for i in femaleanimals:
+                    female.append(i.gip)
                 len_femaleanimals=len(femaleanimals)
             
             context={
                 'form':form,
-                'male': maleanimals,
-                'female': femaleanimals,
+                'male': male,
+                'female': female,
                 'malelen': len_maleanimals,
                 'femalelen': len_femaleanimals,
                 'tablename':'Select Pigs'

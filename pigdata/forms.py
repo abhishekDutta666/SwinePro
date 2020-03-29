@@ -11,7 +11,7 @@ class datetodate(forms.Form):
 
 class selectpigsform(forms.Form):
     CHOICES = (('1','Litter size of birth is less than'),('2','Litter size of birth is greater than'),
-    ( '3','Litter size of weaning is greater than'),('4','Litter size of weaning is less than'))
+    ( '3','Litter size of weaning is greater than'),('4','Litter size of weaning is equal to'))
     task = forms.ChoiceField(choices=CHOICES, label='The')
     amount=forms.CharField(label='', max_length='150')
 
