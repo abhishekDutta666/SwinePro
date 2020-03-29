@@ -31,7 +31,7 @@ class health_parameter_vetexam(models.Model):
     date_of_treatment=models.DateField(blank=True,null=True)
     medication=models.TextField(blank=True)
     remarks=models.TextField(blank=True)
-    postmortem=models.TextField(blank=True)
+    
     
 
 class disposal_culling(models.Model):
