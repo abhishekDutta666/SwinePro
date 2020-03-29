@@ -379,7 +379,7 @@ def update_general(request, animal_id):
 @login_required(login_url='loginuser')
 def update_disposal(request, animal_id):
     obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
-    animal=disposal_culling.objects.get(gip=obj)
+    animal, create=disposal_culling.objects.get_or_create(gip=obj)
     form=disposal_update_form(instance=animal)
     if request.method=='POST':
         form=disposal_update_form(request.POST, instance=animal)
@@ -418,7 +418,7 @@ def update_nutrition(request, animal_id):
 @login_required(login_url='loginuser')
 def update_economics(request, animal_id):
     obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
-    animal=economics.objects.get(gip=obj)
+    animal, create=economics.objects.get_or_create(gip=obj)
     form=economics_update_form(instance=animal)
     if request.method=='POST':
         form=economics_form(request.POST, instance=animal)
@@ -437,7 +437,7 @@ def update_efficiency(request,animal_id):
     obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
     gender=obj.gender
     if gender=='Male':
-        animal=efficiency_parameter_male.objects.get(gip=obj)
+        animal, create=efficiency_parameter_male.objects.get_or_create(gip=obj)
         form=efficiency_update_form_male(instance=animal)
         if request.method=='POST':
             form=efficiency_update_form_male(request.POST, instance=animal)
@@ -451,7 +451,7 @@ def update_efficiency(request,animal_id):
 
         return render(request,"create/create_efficiency_male.html",context)
     elif gender=='Female':
-        animal=efficiency_parameter_female.objects.get(gip=obj)
+        animal, create=efficiency_parameter_female.objects.get_or_create(gip=obj)
         form=efficiency_update_form_female(instance=animal)
         if request.method=='POST':
             form=efficiency_update_form_female(request.POST, instance=animal)
@@ -468,7 +468,7 @@ def update_efficiency(request,animal_id):
 @login_required(login_url='loginuser')
 def update_qualification(request, animal_id):
     obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
-    animal=qualification_boar.objects.get(gip=obj)
+    animal, create=qualification_boar.objects.get_or_create(gip=obj)
     form=qualification_update_form(instance=animal)
     if request.method=='POST':
         form=qualification_update_form(request.POST, instance=animal)
@@ -484,7 +484,7 @@ def update_qualification(request, animal_id):
 
 @login_required(login_url='loginuser')
 def update_death(request, animal_id):
-    obj=general_identification_and_parentage.objects.get(animal_id=animal_id)
+    obj, create=general_identification_and_parentage.objects.get_or_create(animal_id=animal_id)
     animal=death.objects.get(gip=obj)
     form=death_update_form(instance=animal)
     if request.method=='POST':
@@ -833,7 +833,7 @@ def revenue_received(request):
 @login_required(login_url='loginuser')
 def selectpigs(request):
     if request.method=='POST':
-        form=pigtmortalityform(request.POST)
+        form=selectpigsform(request.POST)
         if form.is_valid():
             n=form.cleaned_data['task']
             num=form.cleaned_data['amount']
@@ -842,23 +842,20 @@ def selectpigs(request):
                 femaleanimals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__lt=num)
                 len_maleanimals=len(maleanimals)
                 len_femaleanimals=len(femaleanimals)
-                context={
-                }
+                
             elif n=='2':
                 maleanimals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__gt=num)
                 femaleanimals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__gt=num)
                 len_maleanimals=len(maleanimals)
                 len_femaleanimals=len(femaleanimals)
-                context={
-                }
+                
             elif n=='3':
                 maleanimals=efficiency_parameter_male.objects.filter(litter_size_weaning__gte=num)
                 
                 femaleanimals=efficiency_parameter_female.objects.filter(litter_size_weaning__gte=num)
                 len_maleanimals=len(maleanimals)
                 len_femaleanimals=len(femaleanimals)
-                context={
-                }
+                
             elif n=='4':
                 maleanimals=efficiency_parameter_male.objects.filter(litter_size_weaning__exact=num)
                 len_maleanimals=len(maleanimals)
@@ -866,15 +863,17 @@ def selectpigs(request):
                 len_femaleanimals=len(femaleanimals)
             
             context={
+                'form':form,
                 'male': maleanimals,
                 'female': femaleanimals,
                 'malelen': len_maleanimals,
                 'femalelen': len_femaleanimals,
+                'tablename':'Select Pigs'
             }
             
-            return render(request, sample.html,context)
-    form=pigmortalityform()
-    return render(request, sample.html, {'form':form})
+            return render(request, "selectpigs.html",context)
+    form=selectpigsform()
+    return render(request, "selectpigs.html", {'form':form, 'tablename':'selectpigs'})
 
 
 

@@ -9,6 +9,12 @@ class datetodate(forms.Form):
     from_date=forms.DateField(label='From')
     to_date=forms.DateField(label='To')
 
+class selectpigsform(forms.Form):
+    CHOICES = (('1','Litter size of birth is less than'),('2','Litter size of birth is greater than'),
+    ( '3','Litter size of weaning is greater than'),('4','Litter size of weaning is less than'))
+    task = forms.ChoiceField(choices=CHOICES, label='The')
+    amount=forms.CharField(label='', max_length='150')
+
 class CreateUserForm(UserCreationForm):
     class Meta:
         model=User
