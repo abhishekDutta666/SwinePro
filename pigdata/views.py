@@ -648,13 +648,28 @@ def history(request, animal_id):
     animal_gender=animal.gender
     animal_health_parameter_vaccination=health_parameter_vaccination.objects.filter(gip=animal)
     animal_health_parameter_vetexam=health_parameter_vetexam.objects.filter(gip=animal)
-    animal_disposal_culling=disposal_culling.objects.get(gip=animal)
+    if disposal_culling.objects.filter(gip=animal).exists()==True:
+        animal_disposal_culling=disposal_culling.objects.get(gip=animal)
+    else:
+        animal_disposal_culling=None
     animal_nutrition_and_feeding=nutrition_and_feeding.objects.filter(gip=animal)
-    animal_economics=economics.objects.get(gip=animal)
-    animal_death=death.objects.get(gip=animal)
+    if economics.objects.filter(gip=animal)==True:
+        animal_economics=economics.objects.get(gip=animal)
+    else:
+        animal_economics=None
+    if death.objects.filter(gip=animal).exists()==True:
+        animal_death=death.objects.get(gip=animal)
+    else:
+        animal_death=None
     if animal_gender=='Male':
-        animal_efficiency_parameter_male=efficiency_parameter_male.objects.get(gip=animal)
-        animal_qualification_boar=qualification_boar.objects.get(gip=animal)
+        if efficiency_parameter_male.objects.filter(gip=animal)==True:
+            animal_efficiency_parameter_male=efficiency_parameter_male.objects.get(gip=animal)
+        else:
+            animal_efficiency_parameter_male=None
+        if qualification_boar.objects.filter(gip=animal)==True:
+            animal_qualification_boar=qualification_boar.objects.get(gip=animal)
+        else:
+            animal_qualification_boar=None
         animal_service_record_male=service_record_male.objects.filter(gip=animal)
         context={
         'tablename':'History Sheet',
@@ -672,7 +687,11 @@ def history(request, animal_id):
         return render(request, "historydatamale.html", context)
     
     elif animal_gender=='Female':
-        animal_efficiency_parameter_female=efficiency_parameter_female.objects.get(gip=animal)
+        if efficiency_parameter_female.objects.filter(gip=animal)==True:
+            animal_efficiency_parameter_female=efficiency_parameter_female.objects.get(gip=animal)
+        else:
+            animal_efficiency_parameter_female=None
+        
         animal_service_record_female=service_record_female.objects.filter(gip=animal)
         #animal_lifetime_litter_character=lifetime_litter_character.objects.get(gip=animal)
         context={
@@ -851,24 +870,28 @@ def selectpigs(request):
             male=[]
             female=[]
             if n=='1':
-                maleanimals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__lt=num)
-                for i in maleanimals:
-                    male.append(i.animal_id)
-                femaleanimals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__lt=num)
-                for i in femaleanimals:
-                    female.append(i.animal_id)
-                len_maleanimals=len(maleanimals)
-                len_femaleanimals=len(femaleanimals)
+                animals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__lt=num)
+                len_maleanimals=0
+                len_femaleanimals=0
+                for i in animals:
+                    if i.gender=='Male':
+                        male.append(i.animal_id)
+                        len_maleanimals+=1
+                    else:
+                        female.append(i.animal_id)
+                        len_femaleanimals+=1
                 
             elif n=='2':
-                maleanimals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__gt=num)
-                for i in maleanimals:
-                    male.append(i.animal_id)
-                femaleanimals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__gt=num)
-                for i in femaleanimals:
-                    female.append(i.animal_id)
-                len_maleanimals=len(maleanimals)
-                len_femaleanimals=len(femaleanimals)
+                animals=general_identification_and_parentage.objects.filter(colitter_size_of_birth__gt=num)
+                len_maleanimals=0
+                len_femaleanimals=0
+                for i in animals:
+                    if i.gender=='Male':
+                        male.append(i.animal_id)
+                        len_maleanimals+=1
+                    else:
+                        female.append(i.animal_id)
+                        len_femaleanimals+=1
                 
             elif n=='3':
                 maleanimals=efficiency_parameter_male.objects.filter(litter_size_weaning__gte=num)
@@ -901,7 +924,7 @@ def selectpigs(request):
             
             return render(request, "selectpigs.html",context)
     form=selectpigsform()
-    return render(request, "selectpigs.html", {'form':form, 'tablename':'selectpigs'})
+    return render(request, "selectpigs.html", {'form':form, 'tablename':'Select Pigs'})
 
 
 
