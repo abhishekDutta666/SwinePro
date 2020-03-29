@@ -12,10 +12,14 @@
 <div class="row justify-content-center py-2">
         
         <button class="btn btn-success btn-lg" type="button" formaction="" id="gip">History Sheet</button>
+        
 </div>
+<div class="row justify-content-center py-2">
+        {% for message in messages %}
+	<p>{{message}}</p>
+        {% endfor %}
+        </div>
 </form>
-<br>
-<br>
 <form id="epform" action="pigletborn">
 <div class="row justify-content-center py-2">
         <button class="btn btn-success btn-lg" type="submit" id="ep">Piglet Born</button>

@@ -114,9 +114,13 @@ def create_general(request):
     if request.method=='POST':
         form=general_form(request.POST)
         if form.is_valid():
-            
-            form.save()
-            return redirect('create_efficiency',animal_id=str(form.cleaned_data['animal_id']))
+            animal_id=str(form.cleaned_data['animal_id'])
+            if general_identification_and_parentage.objects.filter(animal_id=animal_id).exists()==False:
+                form.save()
+                return redirect('create_efficiency',animal_id)
+            else:
+                messages.error(request, 'animal already exists')
+
     context={
         'form':form,
         'tablename': 'General Identification And Parentage'
@@ -351,12 +355,16 @@ def successupdate(request):
 @login_required(login_url='loginuser')
 def update(request):
     animal_id=request.POST.get('animal_id')
-    animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
-    context={'tablename':'Update Records', 'animal_id':animal_id}
-    if animal.gender=='Female':
-        return render(request,"updatefemale.html",context)
-    elif animal.gender=='Male':
-        return render(request,"updatemale.html", context)
+    if general_identification_and_parentage.objects.filter(animal_id=animal_id).exists():
+        animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
+        context={'tablename':'Update Records', 'animal_id':animal_id}
+        if animal.gender=='Female':
+            return render(request,"updatefemale.html",context)
+        elif animal.gender=='Male':
+            return render(request,"updatemale.html", context)
+    else:
+        messages.error(request, 'The animal does not exist')
+        return redirect(dataentry)
 
 
 @login_required(login_url='loginuser')
@@ -633,6 +641,9 @@ def update_vetexam(request, animal_id):
 
 @login_required(login_url='loginuser')
 def history(request, animal_id):
+    if general_identification_and_parentage.objects.filter(animal_id=animal_id).exists()==False:
+        messages.error(request, 'The animal does not exist')
+        return redirect(report)
     animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
     animal_gender=animal.gender
     animal_health_parameter_vaccination=health_parameter_vaccination.objects.filter(gip=animal)

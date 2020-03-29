@@ -5,8 +5,12 @@
 
 <form autocomplete="off" method="POST">
   {% csrf_token %}
+  {% for message in messages %}
+	    <p>{{message}}</p>
+      {% endfor %}
   {{form|crispy}}
       <button class="btn btn-success btn-lg float-right" type="submit">Next</button>
+      
 </form>
 
 

@@ -17,6 +17,9 @@
         <button class="btn btn-success btn-lg float-right" type="submit">Update Old Pig</button>
     </div>
 </form>
+{% for message in messages %}
+	<p>{{message}}</p>
+{% endfor %}
 <form>
             <button class="btn btn-success btn-lg" type="submit" formaction="/">Return Home</button>
     </form>
