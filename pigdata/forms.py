@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from .models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from bootstrap_datepicker_plus import DatePickerInput
 
 class datetodate(forms.Form):
     from_date=forms.DateField(label='From')
@@ -12,11 +13,12 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model=User
         fields=['username','email', 'password1', 'password2']
-        labels={'username': 'Identification'}
+        labels={'username': 'Username'}
+        
 
 class loginuserform(forms.Form):
-    username=forms.CharField(label='Identification', max_length=150)
-    password=forms.CharField(label='Password', max_length=150)
+    username=forms.CharField(label='Username', max_length=150)
+    password=forms.CharField(label='Password', max_length=150, widget=forms.PasswordInput)
 
 class general_form(forms.ModelForm):
     class Meta:
@@ -35,6 +37,10 @@ class general_form(forms.ModelForm):
             'color_and_marking':'Colors And Markings',
             'abnormalities': 'Genetic Abnormalities/Disorder',
         }
+        widgets = {
+            'dob': DatePickerInput(format='%Y-%m-%d'),
+        }
+        
 
 class disposal_form(forms.ModelForm):
     class Meta:
@@ -48,6 +54,9 @@ class disposal_form(forms.ModelForm):
             'revenue':'Revenue Generated'
             
         }
+        widgets = {
+            'sale_date': DatePickerInput(format='%Y-%m-%d'),
+        }
 
 class death_form(forms.ModelForm):
     class Meta:
@@ -58,6 +67,9 @@ class death_form(forms.ModelForm):
             'cause_death': 'Cause Of Death',
             'date_death': 'Date Of Death',
             'postmortem_findings':'Post Mortem Findings'
+        }
+        widgets = {
+            'date_death': DatePickerInput(format='%Y-%m-%d'),
         }
 
 
@@ -71,6 +83,10 @@ class nutrition_form(forms.ModelForm):
             'start_date': 'Start Date',
             'end_date': 'End Date',
             'remarks': 'Remarks',
+        }
+        widgets = {
+            'start_date': DatePickerInput(format='%Y-%m-%d'),
+            'end_date': DatePickerInput(format='%Y-%m-%d'),
         }
 
 class economics_form(forms.ModelForm):
@@ -94,6 +110,11 @@ class vaccination_form(forms.ModelForm):
             'first_dose': 'First Dose',
             'booster': 'Booster Dose',
         }
+        widgets = {
+            'first_dose': DatePickerInput(format='%Y-%m-%d'),
+            'booster': DatePickerInput(format='%Y-%m-%d'),
+            'repeat': DatePickerInput(format='%Y-%m-%d'),
+        }
 
 class vetexam_form(forms.ModelForm):
     class Meta:
@@ -105,6 +126,9 @@ class vetexam_form(forms.ModelForm):
             'date_of_treatment': 'Date of Treatment',
             'medication': 'Medication',
             'remarks': 'Remarks',
+        }
+        widgets = {
+            'date_of_treatment': DatePickerInput(format='%Y-%m-%d'),
         }
 
 class efficiency_form_female(forms.ModelForm):
@@ -123,6 +147,11 @@ class efficiency_form_female(forms.ModelForm):
             'weight_six': 'Weight At Six Months',
             'weight_eight':'Weight At Eight Months',
             'conform_at_eight': 'Conformation At Eight Months',
+        }
+        widgets = {
+            'dow': DatePickerInput(format='%Y-%m-%d'),
+            'dos': DatePickerInput(format='%Y-%m-%d'),
+            'dosm': DatePickerInput(format='%Y-%m-%d'),
         }
 
 
@@ -144,6 +173,12 @@ class efficiency_form_male(forms.ModelForm):
             'weight_eight': 'Weight At Eight Months',
             'conform_at_eight': 'Conformation At Eight Months',
         }
+        widgets = {
+            'dow': DatePickerInput(format='%Y-%m-%d'),
+            'dos': DatePickerInput(format='%Y-%m-%d'),
+            'doc': DatePickerInput(format='%Y-%m-%d'),
+            'dosm': DatePickerInput(format='%Y-%m-%d'),
+        }
 
 class qualification_form(forms.ModelForm):
     class Meta:
@@ -157,6 +192,10 @@ class qualification_form(forms.ModelForm):
             'training_score': 'Training Score',
             'seminal_characteristics': 'Evaluation Based On Seminal Characteristics',
             'suitability': 'Suitability For Insemination',
+        }
+        widgets = {
+            'date_of_training': DatePickerInput(format='%Y-%m-%d'),
+            
         }
 
 class service_form_male(forms.ModelForm):
@@ -178,6 +217,10 @@ class service_form_male(forms.ModelForm):
             'total_weaned': 'Number Of Total Weaned',
             'weaning_weight': 'Weaning Weight',
             'still_birth_abnormality': 'Still Birth Or Abnormality',
+        }
+        widgets = {
+            'dos': DatePickerInput(format='%Y-%m-%d'),
+            'dof': DatePickerInput(format='%Y-%m-%d'),
         }
 
 class service_form_female(forms.ModelForm):
@@ -204,7 +247,12 @@ class service_form_female(forms.ModelForm):
             'still_birth_abnormality': 'Still Birth Or Abnormality',
             'date_of_abortion':'Date Of Abortion',
         }
-
+        widgets = {
+            'dos': DatePickerInput(format='%Y-%m-%d'),
+            'dof': DatePickerInput(format='%Y-%m-%d'),
+            'dow': DatePickerInput(format='%Y-%m-%d'),
+            'date_of_abortion': DatePickerInput(format='%Y-%m-%d'),
+        }
 
 
 
@@ -238,7 +286,10 @@ class general_update_form(forms.ModelForm):
             'color_and_marking':'Colors And Markings',
             'abnormalities': 'Genetic Abnormalities/Disorder',
         }
-
+        widgets = {
+            'dob': DatePickerInput(format='%Y-%m-%d'),
+        }
+        
 class disposal_update_form(forms.ModelForm):
     class Meta:
         model=disposal_culling
@@ -249,6 +300,9 @@ class disposal_update_form(forms.ModelForm):
             'sale_date': 'Date Of Sale/Transfer',
             'weight_sale': 'Weight At Sale/Transfer',
             'revenue':'Revenue Generated'
+        }
+        widgets = {
+            'sale_date': DatePickerInput(format='%Y-%m-%d'),
         }
 
 class death_update_form(forms.ModelForm):
@@ -261,6 +315,10 @@ class death_update_form(forms.ModelForm):
             'date_death': 'Date Of Death',
             'postmortem_findings':'Post Mortem Findings'
         }
+        widgets = {
+            'date_death': DatePickerInput(format='%Y-%m-%d'),
+        }
+
 
 
 class nutrition_update_form(forms.ModelForm):
@@ -273,6 +331,10 @@ class nutrition_update_form(forms.ModelForm):
             'start_date': 'Start Date',
             'end_date': 'End Date',
             'remarks': 'Remarks',
+        }
+        widgets = {
+            'start_date': DatePickerInput(format='%Y-%m-%d'),
+            'end_date': DatePickerInput(format='%Y-%m-%d'),
         }
 
 class economics_update_form(forms.ModelForm):
@@ -296,6 +358,11 @@ class vaccination_update_form(forms.ModelForm):
             'first_dose': 'First Dose',
             'booster': 'Booster Dose',
         }
+        widgets = {
+            'first_dose': DatePickerInput(format='%Y-%m-%d'),
+            'booster': DatePickerInput(format='%Y-%m-%d'),
+            'repeat': DatePickerInput(format='%Y-%m-%d'),
+        }
 
 class vetexam_update_form(forms.ModelForm):
     class Meta:
@@ -307,6 +374,9 @@ class vetexam_update_form(forms.ModelForm):
             'date_of_treatment': 'Date of Treatment',
             'medication': 'Medication',
             'remarks': 'Remarks',
+        }
+        widgets = {
+            'date_of_treatment': DatePickerInput(format='%Y-%m-%d'),
         }
 
 class efficiency_update_form_female(forms.ModelForm):
@@ -325,6 +395,11 @@ class efficiency_update_form_female(forms.ModelForm):
             'weight_six': 'Weight At Six Months',
             'weight_eight': 'Weight At Eight Months',
             'conform_at_eight': 'Conformation At Eight Months',
+        }
+        widgets = {
+            'dow': DatePickerInput(format='%Y-%m-%d'),
+            'dos': DatePickerInput(format='%Y-%m-%d'),
+            'dosm': DatePickerInput(format='%Y-%m-%d'),
         }
 
 
@@ -346,6 +421,12 @@ class efficiency_update_form_male(forms.ModelForm):
             'weight_eight': 'Weight At Eight Months',
             'conform_at_eight': 'Conformation At Eight Months',
         }
+        widgets = {
+            'dow': DatePickerInput(format='%Y-%m-%d'),
+            'dos': DatePickerInput(format='%Y-%m-%d'),
+            'doc': DatePickerInput(format='%Y-%m-%d'),
+            'dosm': DatePickerInput(format='%Y-%m-%d'),
+        }
 
 class qualification_update_form(forms.ModelForm):
     class Meta:
@@ -359,6 +440,10 @@ class qualification_update_form(forms.ModelForm):
             'training_score': 'Training Score',
             'seminal_characteristics': 'Evaluation Based On Seminal Characteristics',
             'suitability': 'Suitability For Insemination',
+        }
+        widgets = {
+            'date_of_training': DatePickerInput(format='%Y-%m-%d'),
+            
         }
 
 class service_update_form_male(forms.ModelForm):
@@ -380,6 +465,10 @@ class service_update_form_male(forms.ModelForm):
             'total_weaned': 'Number Of Total Weaned',
             'weaning_weight': 'Weaning Weight',
             'still_birth_abnormality': 'Still Birth Or Abnormality',
+        }
+        widgets = {
+            'dos': DatePickerInput(format='%Y-%m-%d'),
+            'dof': DatePickerInput(format='%Y-%m-%d'),
         }
 
 class service_update_form_female(forms.ModelForm):
@@ -405,4 +494,10 @@ class service_update_form_female(forms.ModelForm):
             'weaning_weight': 'Weaning Weight',
             'still_birth_abnormality': 'Still Birth Or Abnormality',
             'date_of_abortion':'Date Of Abortion',
+        }
+        widgets = {
+            'dos': DatePickerInput(format='%Y-%m-%d'),
+            'dof': DatePickerInput(format='%Y-%m-%d'),
+            'dow': DatePickerInput(format='%Y-%m-%d'),
+            'date_of_abortion': DatePickerInput(format='%Y-%m-%d'),
         }

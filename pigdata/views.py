@@ -119,7 +119,7 @@ def create_general(request):
             return redirect('create_efficiency',animal_id=str(form.cleaned_data['animal_id']))
     context={
         'form':form,
-        'tablename': 'General Indentification And Parentage'
+        'tablename': 'General Identification And Parentage'
     }
 
     return render(request,"create/create_general.html",context)
@@ -370,7 +370,7 @@ def update_general(request, animal_id):
             return redirect('successupdate')
     context={
         'form':form,
-        'tablename': 'General Indentification And Parentage'
+        'tablename': 'General Identification And Parentage'
     }
 
     return render(request,"create/create_general.html",context)
