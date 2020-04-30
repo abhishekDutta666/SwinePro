@@ -3,10 +3,102 @@
 {% load crispy_forms_tags %}
 {% block cardcontent %}
 
-<form autocomplete="off" method="POST">
+{% comment %} <form autocomplete="off" method="POST">
 {% csrf_token %}
   {{form|crispy}}
   <button type="submit">Add</button>
+</form> {% endcomment %}
+
+<form method="POST">
+   {% csrf_token %}
+
+ {{ form.gip.as_hidden}}
+  <div class="form-row">
+      <div class="form-group col-md-12">
+        {{ form.sow_no|as_crispy_field }}
+      </div>
+  </div>
+  <div class="form-row">
+      <div class="form-group col-md-12">
+        {{ form.dos|as_crispy_field }}
+      </div>
+  </div>
+  <div class="form-row">
+
+      <div class="form-group col-md-12">
+      {{ form.dof.as_hidden}}
+        </div>
+  </div>
+  <div class="form-row">
+
+        <div class="form-group col-md-12">
+          {{ form.parity|as_crispy_field }}
+          
+        </div>
+  </div>
+  <div class="form-row">
+
+      <div class="form-group col-md-12">
+          {{ form.born_male|as_crispy_field }}
+          
+      </div> 
+  </div>
+  <div class="form-row">
+
+      <div class="form-group col-md-12">
+          {{ form.born_female|as_crispy_field }}
+          
+      </div> 
+  </div>
+  <div class="form-row">
+
+      <div class="form-group col-md-12">
+          {{ form.born_total.as_hidden }}
+          
+      </div> 
+  </div>
+  <div class="form-row">
+
+      <div class="form-group col-md-12">
+          {{ form.litter_weight_birth|as_crispy_field }}
+          
+      </div> 
+  </div>
+  <div class="form-row">
+      <div class="form-group col-md-12">
+          {{ form.weaned_male|as_crispy_field }}
+          
+      </div>
+</div>
+<div class="form-row">
+      <div class="form-group col-md-12">
+          {{ form.weaned_female|as_crispy_field }}
+         
+      </div>
+</div>
+
+<div class="form-row">
+      <div class="form-group col-md-12">
+          {{ form.total_weaned.as_hidden }}
+         
+      </div>
+</div>
+
+<div class="form-row">
+      <div class="form-group col-md-12">
+          {{ form.weaning_weight|as_crispy_field }}
+         
+      </div>
+</div>
+<div class="form-row">
+      <div class="form-group col-md-12">
+          {{ form.still_birth_abnormality|as_crispy_field }}
+         
+      </div>
+</div>
+
+
+  <button class="btn btn-success btn-lg float-right" type="submit">Add</button>
 </form>
 
 
@@ -16,12 +108,11 @@
 
           <thead id="theadthid">
             <tr >
+            <th scope="col"> Serial Number</th>
             <th scope="col"> Identification Number</th>
             <th scope="col"> SOW Number</th>
             <th scope="col"> Date of Service</th>
-            <th scope="col"> Nature Of Service</th>
             <th scope="col"> Date Of Farrowing</th>
-            <th scope="col"> Interfarrowing Interval</th>
             <th scope="col"> Parity</th>
             <th scope="col"> Number of male born</th>
             <th scope="col"> Number of female born</th>
@@ -56,9 +147,12 @@
             <td>{{ service.total_weaned }}</td>
             <td>{{ service.weaning_weight }}</td>
             <td>{{ service.still_birth_abnormality }}</td>
-
-            <td><form action="" method="POST">{% csrf_token %}
-                <button class="btn btn-info form-control"type="submit" name="gip">Delete</button>
+              
+            <td><form action="{% url 'deleteservice' gip service.pk %}" method="POST">
+                {% csrf_token %}
+                <input value='{{backbut}}' id='backbutton' name='backbutton' type='hidden'>
+                
+                <button class="btn btn-info form-control"type="submit">Delete</button>
                 </form>
                 </td>
           </tr>

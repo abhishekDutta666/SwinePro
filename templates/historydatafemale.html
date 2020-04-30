@@ -46,7 +46,7 @@ Date Of Weaning : {{ efficiency.dow}}
 Litter size weaning : {{ efficiency.litter_size_weaning}} 
 </div>
 <div class="row">
-Age At Weaning : {{ efficiency.weaning_age }}
+Age At Weaning (in days) : {{ efficiency.weaning_age }}
 </div>
 <div class="row">
 Weaning Weight : {{ efficiency.weaning_weight }}
@@ -130,6 +130,32 @@ Conformation At Eight Months: {{ efficiency.conform_at_eight }}
           </tbody>
       </table>
   </div>
+
+<div class="row">
+Number Of Litter Born Lifetime  : {{born_sum }}
+</div>
+
+<div class="row">
+Lifetime Litter Weight At Birth : {{ total_born_weight }}
+</div>
+
+<div class="row">
+Lifetime Litter Number At Weaning : {{ weaned_sum }}
+</div>
+
+<div class="row">
+Lifetime Litter Weight At Weaning : {{ total_weaned_weight }}
+</div>
+<div class="row">
+Preweaning Mortality (in percentage) : {{ preweaning_mortality }}
+</div>
+
+'born_sum':born_sum,
+        'weaned_sum':weaned_sum,
+        'total_born_weight':total_born_weight,
+        'total_weaned_weight':total_weaned_weight,
+        'preweaning_mortality':preweaning_mortality,
+
 
 
 {% comment %} vaccination {% endcomment %}

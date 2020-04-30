@@ -1,0 +1,20 @@
+{% extends 'card.html' %}
+{% load static %}
+{% block cardcontent %}
+<div>
+<h5>Identification Numbers of Animals</h5>
+{% for i in animals %}
+    <a href="{% url 'history' i.animal_id %} ">{{i.animal_id}}</a>
+    <form method='POST' action="{% url 'update' %}">
+    {% csrf_token %}
+            <input type="hidden" name='animal_id' id='animal_id' value="{{i.animal_id}}">
+            <button class="btn btn-success btn-lg" type="submit">update</button>
+    </form>
+{% endfor %}
+</div>
+<br>
+<form>
+            <button class="btn btn-success btn-lg" type="submit" formaction="/report">Return</button>
+    </form>
+
+{% endblock cardcontent %}   

@@ -45,6 +45,7 @@ class general_form(forms.ModelForm):
         }
         widgets = {
             'dob': DatePickerInput(format='%Y-%m-%d'),
+            
         }
         
 
@@ -294,6 +295,17 @@ class general_update_form(forms.ModelForm):
         }
         widgets = {
             'dob': DatePickerInput(format='%Y-%m-%d'),
+            #'animal_id':forms.TextInput(attrs={'disabled':True}),
+            #'dob':forms.TextInput(attrs={'disabled':True}),
+            #'gender':forms.TextInput(attrs={'disabled':True}),
+            #'breed':forms.TextInput(attrs={'disabled':True}),
+            #'dam_no': forms.TextInput(attrs={'disabled':True}),
+            #'sire_no': forms.TextInput(attrs={'disabled':True}),
+            #'grand_dam': forms.TextInput(attrs={'disabled':True}),
+            #'grand_sire': forms.TextInput(attrs={'disabled':True}),
+            #'colitter_size_of_birth': forms.TextInput(attrs={'disabled':True}),
+            #'color_and_marking': forms.TextInput(attrs={'disabled':True}),
+            #'abnormalities': forms.TextInput(attrs={'disabled':True}),
         }
         
 class disposal_update_form(forms.ModelForm):
@@ -309,6 +321,12 @@ class disposal_update_form(forms.ModelForm):
         }
         widgets = {
             'sale_date': DatePickerInput(format='%Y-%m-%d'),
+            #'gip': forms.TextInput(attrs={'disabled':True}),
+            #'reason': forms.TextInput(attrs={'disabled':True}),
+            #'sale_date': forms.TextInput(attrs={'disabled':True}),
+            #'weight_sale': forms.TextInput(attrs={'disabled':True}),
+            #'revenue':forms.TextInput(attrs={'disabled':True})
+            
         }
 
 class death_update_form(forms.ModelForm):
@@ -323,6 +341,10 @@ class death_update_form(forms.ModelForm):
         }
         widgets = {
             'date_death': DatePickerInput(format='%Y-%m-%d'),
+            #'gip': forms.TextInput(attrs={'disabled':True}),
+            #'cause_death': forms.TextInput(attrs={'disabled':True}),
+            #'date_death': forms.TextInput(attrs={'disabled':True}),
+            #'postmortem_findings':forms.TextInput(attrs={'disabled':True}),
         }
 
 
@@ -341,6 +363,11 @@ class nutrition_update_form(forms.ModelForm):
         widgets = {
             'start_date': DatePickerInput(format='%Y-%m-%d'),
             'end_date': DatePickerInput(format='%Y-%m-%d'),
+            #'gip': forms.TextInput(attrs={'disabled':True}),
+            #'treatment': forms.TextInput(attrs={'disabled':True}),
+            #'start_date': forms.TextInput(attrs={'disabled':True}),
+            #'end_date': forms.TextInput(attrs={'disabled':True}),
+            #'remarks': forms.TextInput(attrs={'disabled':True}),
         }
 
 class economics_update_form(forms.ModelForm):
@@ -351,6 +378,11 @@ class economics_update_form(forms.ModelForm):
             'gip': 'Identification Number',
             'book_value': 'Book Value',
             'amount_realized': 'Amount Realized',
+        }
+        widgets={
+            #'gip': forms.TextInput(attrs={'disabled':True}),
+            #'book_value': forms.TextInput(attrs={'disabled':True}),
+            #'amount_realized': forms.TextInput(attrs={'disabled':True}),
         }
 
 class vaccination_update_form(forms.ModelForm):
@@ -368,6 +400,11 @@ class vaccination_update_form(forms.ModelForm):
             'first_dose': DatePickerInput(format='%Y-%m-%d'),
             'booster': DatePickerInput(format='%Y-%m-%d'),
             'repeat': DatePickerInput(format='%Y-%m-%d'),
+            #'gip': forms.TextInput(attrs={'disabled':True}),
+            #'disease': forms.TextInput(attrs={'disabled':True}),
+            #'make': forms.TextInput(attrs={'disabled':True}),
+            #'first_dose': forms.TextInput(attrs={'disabled':True}),
+            #'booster': forms.TextInput(attrs={'disabled':True}),
         }
 
 class vetexam_update_form(forms.ModelForm):
@@ -383,6 +420,11 @@ class vetexam_update_form(forms.ModelForm):
         }
         widgets = {
             'date_of_treatment': DatePickerInput(format='%Y-%m-%d'),
+            #'gip': forms.TextInput(attrs={'disabled':True}),
+            #'reason': forms.TextInput(attrs={'disabled':True}),
+            #'date_of_treatment': forms.TextInput(attrs={'disabled':True}),
+            #'medication': forms.TextInput(attrs={'disabled':True}),
+            #'remarks': forms.TextInput(attrs={'disabled':True}),
         }
 
 class efficiency_update_form_female(forms.ModelForm):
@@ -406,6 +448,17 @@ class efficiency_update_form_female(forms.ModelForm):
             'dow': DatePickerInput(format='%Y-%m-%d'),
             'dos': DatePickerInput(format='%Y-%m-%d'),
             'dosm': DatePickerInput(format='%Y-%m-%d'),
+            #'gip': forms.TextInput(attrs={'disabled':True}),
+            #'dow': forms.TextInput(attrs={'disabled':True}),
+            #'litter_size_weaning':forms.TextInput(attrs={'disabled':True}),
+            #'weaning_age': forms.TextInput(attrs={'disabled':True}),
+            #'weaning_weight':forms.TextInput(attrs={'disabled':True}),
+            #'dos': forms.TextInput(attrs={'disabled':True}),
+            #'dosm': forms.TextInput(attrs={'disabled':True}),
+            #'sexual_maturity_weight': forms.TextInput(attrs={'disabled':True}),
+            #'weight_six': forms.TextInput(attrs={'disabled':True}),
+            #'weight_eight': forms.TextInput(attrs={'disabled':True}),
+            #'conform_at_eight': forms.TextInput(attrs={'disabled':True}),
         }
 
 
@@ -426,12 +479,25 @@ class efficiency_update_form_male(forms.ModelForm):
             'weight_six': 'Weight At Six Months',
             'weight_eight': 'Weight At Eight Months',
             'conform_at_eight': 'Conformation At Eight Months',
+            
         }
         widgets = {
             'dow': DatePickerInput(format='%Y-%m-%d'),
             'dos': DatePickerInput(format='%Y-%m-%d'),
             'doc': DatePickerInput(format='%Y-%m-%d'),
             'dosm': DatePickerInput(format='%Y-%m-%d'),
+            # 'gip': forms.TextInput(attrs={'disabled':True}),
+            # 'dow': forms.TextInput(attrs={'disabled':True}),
+            # 'litter_size_weaning':forms.TextInput(attrs={'disabled':True}),
+            # 'weaning_age':forms.TextInput(attrs={'disabled':True}),
+            # 'weaning_weight':forms.TextInput(attrs={'disabled':True}),
+            # 'dos': forms.TextInput(attrs={'disabled':True}),
+            # 'doc': forms.TextInput(attrs={'disabled':True}),
+            # 'dosm': forms.TextInput(attrs={'disabled':True}),
+            # 'sexual_maturity_weight': forms.TextInput(attrs={'disabled':True}),
+            # 'weight_six': forms.TextInput(attrs={'disabled':True}),
+            # 'weight_eight': forms.TextInput(attrs={'disabled':True}),
+            # 'conform_at_eight': forms.TextInput(attrs={'disabled':True}),
         }
 
 class qualification_update_form(forms.ModelForm):
@@ -449,7 +515,13 @@ class qualification_update_form(forms.ModelForm):
         }
         widgets = {
             'date_of_training': DatePickerInput(format='%Y-%m-%d'),
-            
+            # 'gip': forms.TextInput(attrs={'disabled':True}),
+            # 'physical_fitness': forms.TextInput(attrs={'disabled':True}),
+            # 'date_of_training': forms.TextInput(attrs={'disabled':True}),
+            # 'period_of_training': forms.TextInput(attrs={'disabled':True}),
+            # 'training_score':forms.TextInput(attrs={'disabled':True}),
+            # 'seminal_characteristics': forms.TextInput(attrs={'disabled':True}),
+            # 'suitability': forms.TextInput(attrs={'disabled':True}),
         }
 
 class service_update_form_male(forms.ModelForm):
@@ -475,6 +547,20 @@ class service_update_form_male(forms.ModelForm):
         widgets = {
             'dos': DatePickerInput(format='%Y-%m-%d'),
             'dof': DatePickerInput(format='%Y-%m-%d'),
+            # 'gip': forms.TextInput(attrs={'disabled':True}),
+            # 'sow_no': forms.TextInput(attrs={'disabled':True}),
+            # 'dos': forms.TextInput(attrs={'disabled':True}),
+            # 'dof': forms.TextInput(attrs={'disabled':True}),
+            # 'parity': forms.TextInput(attrs={'disabled':True}),
+            # 'born_male': forms.TextInput(attrs={'disabled':True}),
+            # 'born_female': forms.TextInput(attrs={'disabled':True}),
+            # 'born_total': forms.TextInput(attrs={'disabled':True}),
+            # 'litter_weight_birth': forms.TextInput(attrs={'disabled':True}),
+            # 'weaned_male': forms.TextInput(attrs={'disabled':True}),
+            # 'weaned_female': forms.TextInput(attrs={'disabled':True}),
+            # 'total_weaned': forms.TextInput(attrs={'disabled':True}),
+            # 'weaning_weight': forms.TextInput(attrs={'disabled':True}),
+            # 'still_birth_abnormality': forms.TextInput(attrs={'disabled':True}),
         }
 
 class service_update_form_female(forms.ModelForm):
@@ -506,4 +592,22 @@ class service_update_form_female(forms.ModelForm):
             'dof': DatePickerInput(format='%Y-%m-%d'),
             'dow': DatePickerInput(format='%Y-%m-%d'),
             'date_of_abortion': DatePickerInput(format='%Y-%m-%d'),
+            # 'gip': forms.TextInput(attrs={'disabled':True}),
+            # 'boar_no':forms.TextInput(attrs={'disabled':True}),
+            # 'dos': forms.TextInput(attrs={'disabled':True}),
+            # 'nos': forms.TextInput(attrs={'disabled':True}),
+            # 'dof': forms.TextInput(attrs={'disabled':True}),
+            # 'dow': forms.TextInput(attrs={'disabled':True}),
+            # 'interfarrowing_interval':forms.TextInput(attrs={'disabled':True}),
+            # 'parity': forms.TextInput(attrs={'disabled':True}),
+            # 'born_male': forms.TextInput(attrs={'disabled':True}),
+            # 'born_female': forms.TextInput(attrs={'disabled':True}),
+            # 'born_total': forms.TextInput(attrs={'disabled':True}),
+            # 'litter_weight_birth': forms.TextInput(attrs={'disabled':True}),
+            # 'weaned_male': forms.TextInput(attrs={'disabled':True}),
+            # 'weaned_female': forms.TextInput(attrs={'disabled':True}),
+            # 'total_weaned': forms.TextInput(attrs={'disabled':True}),
+            # 'weaning_weight': forms.TextInput(attrs={'disabled':True}),
+            # 'still_birth_abnormality': forms.TextInput(attrs={'disabled':True}),
+            # 'date_of_abortion':forms.TextInput(attrs={'disabled':True}),
         }

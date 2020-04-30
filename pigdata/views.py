@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -83,6 +83,115 @@ def dataentry(request):
 
 def report(request):
     return render(request, "report.html", context={'tablename':'Report Generation'})
+#-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@login_required(login_url='loginuser')
+def delete(request, animal_id):
+    animal=get_object_or_404(general_identification_and_parentage, animal_id=animal_id)
+    animal.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='loginuser')
+def deletepigs(request):
+    animals=general_identification_and_parentage.objects.all()
+    context={
+        'animals':animals,
+        'tablename':'Remove Pigs',
+    }
+    return render(request, "deletepigs.html", context)
+
+
+@login_required(login_url='loginuser')
+def delete_service(request, animal_id, pk):
+    if request.method=='POST':
+        backbutton=request.POST.get('backbutton')
+        animal=get_object_or_404(general_identification_and_parentage, animal_id=animal_id)
+        if animal.gender=='Male':
+            #service=get_object_or_404(service_record_male, gip=animal, pk=pk)
+            service=service_record_male.objects.get(gip=animal, pk=pk) 
+            
+            service.delete()
+            return redirect(backbutton)
+        else:
+            service=get_object_or_404(service_record_female, gip=animal, pk=pk)
+            service.delete()
+            return redirect(request.build_absolute_uri())
+
+@login_required(login_url='loginuser')
+def delete_vaccination(request, animal_id, pk):
+    if request.method=='POST':
+        backbutton=request.POST.get('backbutton')
+        animal=get_object_or_404(general_identification_and_parentage, animal_id=animal_id)
+        vacc=health_parameter_vaccination.objects.get(gip=animal, pk=pk) 
+        vacc.delete()
+        return redirect(backbutton)
+
+@login_required(login_url='loginuser')
+def delete_vetexam(request, animal_id, pk):
+    if request.method=='POST':
+        backbutton=request.POST.get('backbutton')
+        animal=get_object_or_404(general_identification_and_parentage, animal_id=animal_id)
+        vet=health_parameter_vetexam.objects.get(gip=animal, pk=pk) 
+        vet.delete()
+        return redirect(backbutton)
+
+@login_required(login_url='loginuser')
+def delete_nutrition(request, animal_id, pk):
+    if request.method=='POST':
+        backbutton=request.POST.get('backbutton')
+        animal=get_object_or_404(general_identification_and_parentage, animal_id=animal_id)
+        nutrition=nutrition_and_feeding.objects.get(gip=animal, pk=pk) 
+        nutrition.delete()
+        return redirect(backbutton)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -132,12 +241,14 @@ def create_general(request):
 def create_efficiency(request, animal_id):
     animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
     gender=animal.gender
-    print(gender)
     if gender=='Male':
         form=efficiency_form_male(initial={'gip':animal})
         if request.method=='POST':    
             form=efficiency_form_male(request.POST)
             if form.is_valid():
+                instance=form.save(commit=False)
+                agevar=instance.dow-instance.gip.dob
+                instance.weaning_age=agevar.days
                 form.save()
                 return redirect('create_qualification',animal_id=animal_id)
         context={
@@ -151,6 +262,9 @@ def create_efficiency(request, animal_id):
         if request.method=='POST':    
             form=efficiency_form_female(request.POST)
             if form.is_valid():
+                instance=form.save(commit=False)
+                agevar=instance.dow-instance.gip.dob
+                instance.weaning_age=agevar.days
                 form.save()
                 return redirect('create_qualification',animal_id=animal_id)
         context={
@@ -190,13 +304,19 @@ def create_service(request, animal_id):
         if request.method=='POST':    
             form=service_form_male(request.POST)
             if form.is_valid():
+                instance=form.save(commit=False)
+                born_total=instance.born_female+instance.born_male
+                weaned_total=instance.weaned_female+instance.weaned_male
+                instance.total_weaned=weaned_total
+                instance.born_total=born_total
                 form.save()
                 return redirect('create_service',animal_id=animal_id)
         context={
             'form':form,
             'services':services,
             'gip':animal_id,
-            'tablename': 'Service Record And Litter Character'
+            'tablename': 'Service Record And Litter Character',
+            'backbut':request.build_absolute_uri(),
         }
 
         return render(request,"service_male.html",context)
@@ -206,13 +326,19 @@ def create_service(request, animal_id):
         if request.method=='POST':    
             form=service_form_female(request.POST)
             if form.is_valid():
+                instance=form.save(commit=False)
+                born_total=instance.born_female+instance.born_male
+                weaned_total=instance.weaned_female+instance.weaned_male
+                instance.total_weaned=weaned_total
+                instance.born_total=born_total
                 form.save()
                 return redirect('create_service',animal_id=animal_id)
         context={
             'form':form,
             'services':services,
             'gip':animal_id,
-            'tablename': 'Service Record And Litter Character'
+            'tablename': 'Service Record And Litter Character',
+            'backbut':request.build_absolute_uri(),
         }
         return render(request,"service_female.html",context)
 
@@ -220,7 +346,7 @@ def create_service(request, animal_id):
 def vaccination(request, animal_id):
     animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
     vaccinations=health_parameter_vaccination.objects.filter(gip=animal)
-    form=vaccination_form(initial={'gip':animal_id})
+    form=vaccination_form(initial={'gip':animal})
     if request.method=='POST':    
         form=vaccination_form(request.POST)
         if form.is_valid():
@@ -230,6 +356,7 @@ def vaccination(request, animal_id):
         'form':form,
         'vaccinations':vaccinations,
         'gip':animal_id,
+        'backbut':request.build_absolute_uri(),
         'tablename':'Vaccinations'
     }
 
@@ -239,7 +366,7 @@ def vaccination(request, animal_id):
 def vetexam(request, animal_id):
     animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
     vet_exams=health_parameter_vetexam.objects.filter(gip=animal)
-    form=vetexam_form(initial={'gip':animal_id})
+    form=vetexam_form(initial={'gip':animal})
     if request.method=='POST':    
         form=vetexam_form(request.POST)
         if form.is_valid():
@@ -249,6 +376,7 @@ def vetexam(request, animal_id):
         'form':form,
         'vet_exams':vet_exams,
         'gip':animal_id,
+        'backbut':request.build_absolute_uri(),
         'tablename':'Veterinary Exam'
     }
 
@@ -286,6 +414,7 @@ def create_nutrition(request, animal_id):
         'tablename':'Nutrition',
         'form':form,
         'nutritions': nutritions,
+        'backbut':request.build_absolute_uri(),
         'gip':animal_id
     }
 
@@ -294,7 +423,8 @@ def create_nutrition(request, animal_id):
 
 @login_required(login_url='loginuser')
 def create_disposal(request, animal_id):
-    form=disposal_form(initial={'gip':animal_id})
+    animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
+    form=disposal_form(initial={'gip':animal})
     if request.method=='POST':    
         form=disposal_form(request.POST)
         if form.is_valid():
@@ -418,6 +548,7 @@ def update_nutrition(request, animal_id):
         'tablename':'Nutrition',
         'form':form,
         'nutritions': nutritions,
+        'backbut':request.build_absolute_uri(),
         'gip':animal_id
     }
 
@@ -450,6 +581,9 @@ def update_efficiency(request,animal_id):
         if request.method=='POST':
             form=efficiency_update_form_male(request.POST, instance=animal)
             if form.is_valid():
+                instance=form.save(commit=False)
+                agevar=instance.dow-instance.gip.dob
+                instance.weaning_age=agevar.days
                 form.save()
                 return redirect('successupdate')
         context={
@@ -464,6 +598,9 @@ def update_efficiency(request,animal_id):
         if request.method=='POST':
             form=efficiency_update_form_female(request.POST, instance=animal)
             if form.is_valid():
+                instance=form.save(commit=False)
+                agevar=instance.dow-instance.gip.dob
+                instance.weaning_age=agevar.days
                 form.save()
                 return redirect('successupdate')
         context={
@@ -517,12 +654,18 @@ def update_service(request, animal_id):
         if request.method=='POST':    
             form=service_form_male(request.POST)
             if form.is_valid():
+                instance=form.save(commit=False)
+                born_total=instance.born_female+instance.born_male
+                weaned_total=instance.weaned_female+instance.weaned_male
+                instance.total_weaned=weaned_total
+                instance.born_total=born_total
                 form.save()
                 return redirect('update_service',animal_id=animal_id)
         context={
             'form':form,
             'services':services,
             'gip':animal_id,
+            'backbut':request.build_absolute_uri(),
             'tablename': 'Service Record And Litter Character'
         }
 
@@ -533,12 +676,18 @@ def update_service(request, animal_id):
         if request.method=='POST':    
             form=service_form_female(request.POST)
             if form.is_valid():
+                instance=form.save(commit=False)
+                born_total=instance.born_female+instance.born_male
+                weaned_total=instance.weaned_female+instance.weaned_male
+                instance.total_weaned=weaned_total
+                instance.born_total=born_total
                 form.save()
                 return redirect('update_service',animal_id=animal_id)
         context={
             'form':form,
             'services':services,
             'gip':animal_id,
+            'backbut':request.build_absolute_uri(),
             'tablename': 'Service Record And Litter Character'
         }
         return render(request,"service_update_female.html",context)
@@ -547,7 +696,7 @@ def update_service(request, animal_id):
 def update_vaccination(request, animal_id):
     animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
     vaccinations=health_parameter_vaccination.objects.filter(gip=animal)
-    form=vaccination_form(initial={'gip':animal_id})
+    form=vaccination_form(initial={'gip':animal})
     if request.method=='POST':    
         form=vaccination_form(request.POST)
         if form.is_valid():
@@ -557,6 +706,7 @@ def update_vaccination(request, animal_id):
         'form':form,
         'vaccinations':vaccinations,
         'gip':animal_id,
+        'backbut':request.build_absolute_uri(),
         'tablename':'Vaccinations'
     }
 
@@ -566,7 +716,7 @@ def update_vaccination(request, animal_id):
 def update_vetexam(request, animal_id):
     animal=general_identification_and_parentage.objects.get(animal_id=animal_id)
     vet_exams=health_parameter_vetexam.objects.filter(gip=animal)
-    form=vetexam_form(initial={'gip':animal_id})
+    form=vetexam_form(initial={'gip':animal})
     if request.method=='POST':    
         form=vetexam_form(request.POST)
         if form.is_valid():
@@ -576,6 +726,7 @@ def update_vetexam(request, animal_id):
         'form':form,
         'vet_exams':vet_exams,
         'gip':animal_id,
+        'backbut':request.build_absolute_uri(),
         'tablename':'Veterinary Exam'
     }
 
@@ -693,6 +844,12 @@ def history(request, animal_id):
             animal_efficiency_parameter_female=None
         
         animal_service_record_female=service_record_female.objects.filter(gip=animal)
+        for i in animal_service_record_female:
+            born_sum+=i.born_total
+            weaned_sum+=i.total_weaned
+            total_born_weight+=i.litter_weight_birth
+            total_weaned_weight+=i.weaning_weight
+        preweaning_mortality=(born_sum-weaned_sum)*100.0/born_sum
         #animal_lifetime_litter_character=lifetime_litter_character.objects.get(gip=animal)
         context={
         'tablename':'History Sheet',
@@ -705,9 +862,25 @@ def history(request, animal_id):
         'economic':animal_economics,
         'services':animal_service_record_female,
         'efficiency':animal_efficiency_parameter_female,
+        'born_sum':born_sum,
+        'weaned_sum':weaned_sum,
+        'total_born_weight':total_born_weight,
+        'total_weaned_weight':total_weaned_weight,
+        'preweaning_mortality':preweaning_mortality,
         #'litter':animal_lifetime_litter_character
         }
         return render(request, "historydatafemale.html", context)
+
+@login_required(login_url='loginuser')
+def allpigs(request):
+    animals=general_identification_and_parentage.objects.all()
+    context={
+        'animals':animals,
+        'tablename':'All The Pigs In The Farm',
+    }
+    return render(request, "allpigs.html", context)
+
+
 
 @login_required(login_url='loginuser')
 def pigletborn(request):
